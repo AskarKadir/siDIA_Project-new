@@ -6,7 +6,7 @@ namespace siDIA_Project
     {
         public String strData(string idRmh)
         {
-            string str = "select Nama as NamaAnggota, jenis_kelamin as JK," +
+            string str = "select Nama as NamaAnggota, jenis_kelamin as JK, "+
                "tempat_lahir as TmptL, FORMAT (tanggal_lahir , 'dd/MM/yyyy ') as TgL," +
                "agama as Agama, pendidikan as Didik,pekerjaan as Kerja, status_perkawinan as SKawin," +
                "status_bpjs as SBPJS, (select count(No_Reg) from warga where id_rumah = '" + idRmh + "' " +

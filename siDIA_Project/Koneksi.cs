@@ -12,8 +12,8 @@ namespace siDIA_Project
         {
             //string strKoneksi = "Data Source = localhost; Initial Catalog = siDIA;" +
             //"Integrated Security = True;";
-            string strKoneksi = "Data Source = INAYAHMUFIDAH\\PIYOMARU842; Initial Catalog = siDIA;" +
-            "User ID = sa; Password = SeokJin_82";
+            string strKoneksi = "Data Source = DESKTOP-9I14KGV\\SQLEXPRESS; Initial Catalog = siDIA;" +
+            "User ID = sidia; Password = 12345678";
             return strKoneksi;
         }
     }

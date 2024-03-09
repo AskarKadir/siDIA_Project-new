@@ -34,6 +34,6 @@ namespace siDIA_Project
         public string P4K { get; set; }
         public string KRumah { get; set; }
         public string NamaKRT { get; set; }
-        public string Tahun { get; set; }
+        public int Tahun { get; set; }
     }
 }
