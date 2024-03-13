@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,8 +17,12 @@ namespace siDIA_Project
         Koneksi kn = new Koneksi();
         QReport qr = new QReport();
         QReportKesling qrk = new QReportKesling();
+        QReportJmlhL qrlk = new QReportJmlhL();
+        QReportJmlhP qrpr = new QReportJmlhP();
 
         ReportCatatanWarga cr = new ReportCatatanWarga();
+        private TextObject textPR;
+
         public CatatanWarga()
         {
             InitializeComponent();
@@ -53,16 +58,34 @@ namespace siDIA_Project
                 }
                 dr.Close();
                 noRmh = hasil;
+
+                DataTable sum = new DataTable();
                 DataTable ds = new DataTable();
                 DataTable dt = new DataTable();
-                SqlDataAdapter kesling = new SqlDataAdapter(qrk.strDataKesling(noRmh,nmKRT), koneksi);
+                DataTable dlk = new DataTable();
+                DataTable dpr = new DataTable();
+
+                SqlDataAdapter kesling = new SqlDataAdapter(qrk.strDataKesling(noRmh, nmKRT), koneksi);
+                kesling.Fill(dt);
                 SqlDataAdapter ad = new SqlDataAdapter(qr.strData(noRmh), koneksi);
-                kesling.Fill(ds);
                 ad.Fill(ds);
-                //Console.WriteLine(qr.strData(noRmh));
-                
+                SqlDataAdapter adlk = new SqlDataAdapter(qrlk.strDataLK(noRmh), koneksi);
+                adlk.Fill(dlk);
+                SqlDataAdapter adpr = new SqlDataAdapter(qrpr.strDataPR(noRmh), koneksi);
+                adpr.Fill(dpr);
+
+                TextObject textP = (TextObject)cr.ReportDefinition.ReportObjects["JmlhP"];
+                TextObject textL = (TextObject)cr.ReportDefinition.ReportObjects["JmlhL"];
+
+                textP.Text = dpr.Rows[0][0].ToString();
+                textL.Text = dlk.Rows[0][0].ToString();
+
+                sum.Merge(dt);
+                sum.Merge(ds);
+
                 koneksi.Close();
-                cr.SetDataSource(ds);
+                cr.SetDataSource(sum);
+                crystalReportViewer1.ReportSource = null;
                 crystalReportViewer1.ReportSource = cr;
                 crystalReportViewer1.Refresh();
                 crystalReportViewer1.Visible = true;

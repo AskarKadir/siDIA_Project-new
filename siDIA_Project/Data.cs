@@ -18,8 +18,6 @@ namespace siDIA_Project
         public string SKawin { get; set; }
         public string SBPJS { get; set; }
         public int JmlhAnggota { get; set; }
-        public int JmlhL { get; set; }
-        public int JmlhP { get; set; }
         public int JmlhKK { get; set; }
         public int Balita { get; set; }
         public int PUS { get; set; }
@@ -34,6 +32,8 @@ namespace siDIA_Project
         public string P4K { get; set; }
         public string KRumah { get; set; }
         public string NamaKRT { get; set; }
+        public int JmlhP { get; set; }
+        public int JmlhL { get; set; }
         public int Tahun { get; set; }
     }
 }

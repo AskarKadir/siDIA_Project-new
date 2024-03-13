@@ -36,6 +36,7 @@
             this.NKRT = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.crystalReportViewer1 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.ReportCatatanWarga1 = new siDIA_Project.ReportCatatanWarga();
             this.topBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -111,12 +112,13 @@
             // 
             // crystalReportViewer1
             // 
-            this.crystalReportViewer1.ActiveViewIndex = -1;
+            this.crystalReportViewer1.ActiveViewIndex = 0;
             this.crystalReportViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.crystalReportViewer1.Cursor = System.Windows.Forms.Cursors.Default;
             this.crystalReportViewer1.Location = new System.Drawing.Point(9, 116);
             this.crystalReportViewer1.Margin = new System.Windows.Forms.Padding(2);
             this.crystalReportViewer1.Name = "crystalReportViewer1";
+            this.crystalReportViewer1.ReportSource = this.ReportCatatanWarga1;
             this.crystalReportViewer1.Size = new System.Drawing.Size(730, 486);
             this.crystalReportViewer1.TabIndex = 17;
             this.crystalReportViewer1.ToolPanelWidth = 150;
@@ -154,5 +156,6 @@
         private System.Windows.Forms.ComboBox NKRT;
         private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private ReportCatatanWarga ReportCatatanWarga1;
     }
 }
