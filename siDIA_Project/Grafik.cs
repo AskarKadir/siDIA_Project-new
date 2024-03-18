@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -213,6 +214,11 @@ namespace siDIA_Project
             }
         }
 
+        private void displayPekerjaan ()
+        {
+
+        }
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             if (fWarga.Text.Equals("Usia"))
@@ -241,6 +247,10 @@ namespace siDIA_Project
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+            else if (fWarga.Text.Equals("Pekerjaan"))
+            {
+                MessageBox.Show("Dalam Pengerjaan", listView1.Items.Count.ToString(), MessageBoxButtons.OK);
             }
         }
 
