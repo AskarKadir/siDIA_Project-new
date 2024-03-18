@@ -21,7 +21,6 @@ namespace siDIA_Project
         QReportJmlhP qrpr = new QReportJmlhP();
 
         ReportCatatanWarga cr = new ReportCatatanWarga();
-        private TextObject textPR;
 
         public CatatanWarga()
         {

@@ -53,8 +53,9 @@ namespace siDIA_Project
             hasil_arr.Add("Pra-Lansia");
 
 
-            for (int i = 0; i < (hasil_arr.Count); i++)
+            for (int i = 0; i < (hasil_arr.Count);)
             {
+                Console.WriteLine("MULAI ULANG");
                 string js = hasil_arr[i];
                 string strs = "";
 
@@ -97,13 +98,32 @@ namespace siDIA_Project
                 SqlCommand cm = new SqlCommand(strs, koneksi);
                 object res = cm.ExecuteScalar();
                 hs = Convert.ToDouble(res);
-                hasil_arrs.Add(hs);
+                if (hs.Equals(0))
+                {
+                    //Console.WriteLine("index " + i + " label " + js);
+                    //Console.WriteLine("label " + js + " = " + hs);
+                    //Console.WriteLine(hasil_arrs[i] + " arrs equals 0 loop 1");
+                    hasil_arr.Remove(js);
+                    //Console.WriteLine(js + " telah dihapus");
+                    //Console.WriteLine("panjang " + hasil_arr.Count());
+                    //Console.WriteLine("panjang arrs equals = " + hasil_arrs.Count());
+                }
+                else
+                {
+                    //Console.WriteLine("panjang arrs = " + hasil_arrs.Count());
+                    hasil_arrs.Add(hs);
+                    //Console.WriteLine("panjang arrs after add hs = " + hasil_arrs.Count());
+                    //Console.WriteLine("index = " + i + " label " + hasil_arr[i] + " ditambahkan dengan data = " + hasil_arrs[i]);
+                    //Console.WriteLine("panjang arr = " + hasil_arr.Count());
+                    //Console.WriteLine("panjang arrs else = " + hasil_arrs.Count());
+                    i++;
+                }
             }
 
-            //Get the names of Cities.
+            //Get count label.
             string[] x = hasil_arr.ToArray();
             double[] y = new double[hasil_arrs.Count];
-            for (int i = 0; i < (hasil_arr.Count); i++)
+            for (int i = 0; i < (hasil_arr.Count);)
             {
                 string js = hasil_arr[i];
                 string strq = "";
@@ -146,9 +166,19 @@ namespace siDIA_Project
                 SqlCommand cm = new SqlCommand(strq, koneksi);
                 object res = cm.ExecuteScalar();
                 hs = Convert.ToDouble(res);
+                Console.WriteLine(hasil_arrs[i] + " arrs[i]");
+                //Console.WriteLine(hs + " hs 2");
+                if (hs.Equals(0))
+                {
+                    //Console.WriteLine(hasil_arr[i] + " loop nomor 2");
+                    //Console.WriteLine(hasil_arrs[i] + " arrs equals 0 loop nomor 2");
+                    hasil_arr.Remove(hasil_arr[i]);
+                    hasil_arrs.Remove(hasil_arrs[i]);
+                }
                 hasil_arrs.Add(hs);
                 //Get the Total of Orders for each City.
                 y[i] = hasil_arrs[i];
+                i++;
             }
 
             //testc git
