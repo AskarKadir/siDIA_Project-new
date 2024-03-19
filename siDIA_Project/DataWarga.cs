@@ -798,7 +798,7 @@ namespace siDIA_Project
 
             string noreg = Noreg.Text;
             DialogResult dg;
-            dg = MessageBox.Show("Apakah anda ingin mengubah data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            dg = MessageBox.Show("Apakah anda ingin menghapus data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (dg == DialogResult.Yes) {
                 str = "delete from warga where no_reg = @nreg";
