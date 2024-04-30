@@ -216,7 +216,163 @@ namespace siDIA_Project
 
         private void displayPekerjaan ()
         {
+            double hs;
+            SqlConnection koneksi = new SqlConnection();
+            koneksi.ConnectionString = kn.strKoneksi();
+            koneksi.Open();
+            List<string> hasil_arr = new List<string>();
+            List<double> hasil_arrs = new List<double>();
 
+            hasil_arr.Add("Pelajar/Mahasiswa");
+            hasil_arr.Add("IRT");
+            hasil_arr.Add("PNS");
+            hasil_arr.Add("Tidak Bekerja");
+            hasil_arr.Add("Buruh/Karyawan");
+            hasil_arr.Add("Lainnya");
+            hasil_arr.Add("Wirausaha");
+
+
+            for (int i = 0; i < (hasil_arr.Count);)
+            {
+                Console.WriteLine("MULAI ULANG");
+                string js = hasil_arr[i];
+                string strs = "";
+
+                if (js.Equals("Pelajar/Mahasiswa"))
+                {
+                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Pelajar/Mahasiswa'";
+                }
+                else if (js.Equals("IRT"))
+                {
+                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Ibu Rumah Tangga'";
+                }
+                else if (js.Equals("PNS"))
+                {
+                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'PNS'";
+                }
+                else if (js.Equals("Tidak Bekerja"))
+                {
+                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Tidak Bekerja'";
+                }
+                else if (js.Equals("Buruh/Karyawan"))
+                {
+                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Buruh/Karyawan'";
+                }else if (js.Equals("Lainnya"))
+                {
+                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Lainnya'";
+                }
+                else
+                {
+                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Wirausaha'";
+                }
+                SqlCommand cm = new SqlCommand(strs, koneksi);
+                object res = cm.ExecuteScalar();
+                hs = Convert.ToDouble(res);
+                if (hs.Equals(0))
+                {
+                    //Console.WriteLine("index " + i + " label " + js);
+                    //Console.WriteLine("label " + js + " = " + hs);
+                    //Console.WriteLine(hasil_arrs[i] + " arrs equals 0 loop 1");
+                    hasil_arr.Remove(js);
+                    //Console.WriteLine(js + " telah dihapus");
+                    //Console.WriteLine("panjang " + hasil_arr.Count());
+                    //Console.WriteLine("panjang arrs equals = " + hasil_arrs.Count());
+                }
+                else
+                {
+                    //Console.WriteLine("panjang arrs = " + hasil_arrs.Count());
+                    hasil_arrs.Add(hs);
+                    //Console.WriteLine("panjang arrs after add hs = " + hasil_arrs.Count());
+                    //Console.WriteLine("index = " + i + " label " + hasil_arr[i] + " ditambahkan dengan data = " + hasil_arrs[i]);
+                    //Console.WriteLine("panjang arr = " + hasil_arr.Count());
+                    //Console.WriteLine("panjang arrs else = " + hasil_arrs.Count());
+                    i++;
+                }
+            }
+
+            //Get count label.
+            string[] x = hasil_arr.ToArray();
+            double[] y = new double[hasil_arrs.Count];
+            for (int i = 0; i < (hasil_arr.Count);)
+            {
+                string js = hasil_arr[i];
+                string strq = "";
+                if (js.Equals("Pelajar/Mahasiswa"))
+                {
+                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Pelajar/Mahasiswa'";
+                }
+                else if (js.Equals("IRT"))
+                {
+                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Ibu Rumah Tangga'";
+                }
+                else if (js.Equals("PNS"))
+                {
+                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'PNS'";
+                }
+                else if (js.Equals("Tidak Bekerja"))
+                {
+                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Tidak Bekerja'";
+                }
+                else if (js.Equals("Buruh/Karyawan"))
+                {
+                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Buruh/Karyawan'";
+                }
+                else if (js.Equals("Lainnya"))
+                {
+                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Lainnya'";
+                }
+                else
+                {
+                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Wirausaha'";
+                }
+                SqlCommand cm = new SqlCommand(strq, koneksi);
+                object res = cm.ExecuteScalar();
+                hs = Convert.ToDouble(res);
+                Console.WriteLine(hasil_arrs[i] + " arrs[i]");
+                //Console.WriteLine(hs + " hs 2");
+                if (hs.Equals(0))
+                {
+                    //Console.WriteLine(hasil_arr[i] + " loop nomor 2");
+                    //Console.WriteLine(hasil_arrs[i] + " arrs equals 0 loop nomor 2");
+                    hasil_arr.Remove(hasil_arr[i]);
+                    hasil_arrs.Remove(hasil_arrs[i]);
+                }
+                hasil_arrs.Add(hs);
+                //Get the Total of Orders for each City.
+                y[i] = hasil_arrs[i];
+                i++;
+            }
+
+            //testc git
+
+            koneksi.Close();
+            ListViewItem temp;
+            var n = 0;
+            foreach (var i in hasil_arr)
+            {
+                temp = new ListViewItem(new string[] { i, hasil_arrs[n++].ToString() });
+                listView1.Items.Add(temp);
+            }
+
+
+            if (listView1.Items.Count != 0)
+            {
+                chart1.Show();
+                label3.Show();
+                comboBox1.Show();
+                listView1.Show();
+                chart1.Series[0].ChartType = SeriesChartType.Pie;
+                chart1.Series[0].Points.DataBindXY(x, y);
+                chart1.Legends[0].Enabled = true;
+            }
+            else
+            {
+                chart1.Hide();
+                listView1.Hide();
+                comboBox1.Hide();
+                label3.Hide();
+                MessageBox.Show("Data Tidak Ada", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -250,7 +406,8 @@ namespace siDIA_Project
             }
             else if (fWarga.Text.Equals("Pekerjaan"))
             {
-                MessageBox.Show("Dalam Pengerjaan", listView1.Items.Count.ToString(), MessageBoxButtons.OK);
+                //MessageBox.Show("Dalam Pengerjaan", listView1.Items.Count.ToString(), MessageBoxButtons.OK);
+                displayPekerjaan();
             }
         }
 

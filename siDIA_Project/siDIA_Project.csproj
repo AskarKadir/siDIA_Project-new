@@ -111,6 +111,12 @@
     <Compile Include="Grafik.Designer.cs">
       <DependentUpon>Grafik.cs</DependentUpon>
     </Compile>
+    <Compile Include="GrafikPreviewRpt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GrafikPreviewRpt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Koneksi.cs" />
     <Compile Include="QReport.cs" />
     <Compile Include="QReportJmlhL.cs" />
@@ -121,6 +127,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportCatatanWarga.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="siDIA_Project1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="siDIA_Project1.Designer.cs">
+      <DependentUpon>siDIA_Project1.cs</DependentUpon>
     </Compile>
     <Compile Include="splashscreen.cs">
       <SubType>Form</SubType>
@@ -151,6 +163,10 @@
     <EmbeddedResource Include="Grafik.resx">
       <DependentUpon>Grafik.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GrafikPreviewRpt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GrafikPreviewRpt.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="home.resx">
       <DependentUpon>home.cs</DependentUpon>
     </EmbeddedResource>
@@ -167,6 +183,9 @@
     <EmbeddedResource Include="ReportCatatanWarga.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReportCatatanWarga.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="siDIA_Project1.resx">
+      <DependentUpon>siDIA_Project1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="splashscreen.resx">
       <DependentUpon>splashscreen.cs</DependentUpon>
