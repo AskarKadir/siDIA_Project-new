@@ -28,10 +28,7 @@ namespace siDIA_Project
             SqlConnection koneksi = new SqlConnection();
             koneksi.ConnectionString = kn.strKoneksi();
             koneksi.Open();
-            string str = "select No_Reg as 'Nomer Registrasi', No_KK as 'No Kartu Keluarga', Nama as 'Nama Warga', jenis_kelamin as 'Jenis Kelamin'," +
-                " tempat_lahir as 'Tempat Lahir', tanggal_lahir as 'Tgl/Bln/Th Lahir', " +
-                "agama as Agama, pendidikan as Pendidikan, " +
-                "pekerjaan as Pekerjaan, status_perkawinan as 'Status Perkawinan', status_bpjs as 'Status BPJS' from warga";
+            string str = "select No_KK as 'No Kartu Keluarga', Nama as 'Nama Warga' from warga";
             SqlDataAdapter ad = new SqlDataAdapter(str, koneksi);
             DataSet ds = new DataSet();
             ad.Fill(ds);
