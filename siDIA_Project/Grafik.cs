@@ -53,146 +53,76 @@ namespace siDIA_Project
             hasil_arr.Add("Lansia");
             hasil_arr.Add("Pra-Lansia");
 
+            double total = 0;
 
-            for (int i = 0; i < (hasil_arr.Count);)
+            foreach (var js in hasil_arr)
             {
-                Console.WriteLine("MULAI ULANG");
-                string js = hasil_arr[i];
                 string strs = "";
-
                 if (js.Equals("Balita"))
                 {
                     strs = "select count(No_Reg) as totalWarga from warga " +
-                    "where 0 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 4";
+                           "where 0 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
+                           "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 4";
                 }
                 else if (js.Equals("Anak"))
                 {
                     strs = "select count(No_Reg) as totalWarga from warga " +
-                    "where 4 < CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) < 15";
+                           "where 4 < CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
+                           "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) < 15";
                 }
                 else if (js.Equals("PUS"))
                 {
                     strs = "select count(No_Reg) as totalWarga from warga " +
-                    "where 15 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 49";
+                           "where 15 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
+                           "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 49";
                 }
                 else if (js.Equals("WUS"))
                 {
                     strs = "select count(No_Reg) as totalWarga from warga " +
-                    "where 20 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 45 " +
-                    "and jenis_kelamin = 'P'";
+                           "where 20 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
+                           "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 45 " +
+                           "and jenis_kelamin = 'P'";
                 }
                 else if (js.Equals("Pra-Lansia"))
                 {
                     strs = "select count(No_Reg) as totalWarga from warga " +
-                    "where 45 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 59";
+                           "where 45 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
+                           "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 59";
                 }
                 else
                 {
                     strs = "select count(No_Reg) as totalWarga from warga " +
-                    "where 60 < CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105)";
+                           "where 60 < CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105)";
                 }
                 SqlCommand cm = new SqlCommand(strs, koneksi);
                 object res = cm.ExecuteScalar();
                 hs = Convert.ToDouble(res);
-                if (hs.Equals(0))
-                {
-                    //Console.WriteLine("index " + i + " label " + js);
-                    //Console.WriteLine("label " + js + " = " + hs);
-                    //Console.WriteLine(hasil_arrs[i] + " arrs equals 0 loop 1");
-                    hasil_arr.Remove(js);
-                    //Console.WriteLine(js + " telah dihapus");
-                    //Console.WriteLine("panjang " + hasil_arr.Count());
-                    //Console.WriteLine("panjang arrs equals = " + hasil_arrs.Count());
-                }
-                else
-                {
-                    //Console.WriteLine("panjang arrs = " + hasil_arrs.Count());
-                    hasil_arrs.Add(hs);
-                    //Console.WriteLine("panjang arrs after add hs = " + hasil_arrs.Count());
-                    //Console.WriteLine("index = " + i + " label " + hasil_arr[i] + " ditambahkan dengan data = " + hasil_arrs[i]);
-                    //Console.WriteLine("panjang arr = " + hasil_arr.Count());
-                    //Console.WriteLine("panjang arrs else = " + hasil_arrs.Count());
-                    i++;
-                }
-            }
-
-            //Get count label.
-            string[] x = hasil_arr.ToArray();
-            double[] y = new double[hasil_arrs.Count];
-            for (int i = 0; i < (hasil_arr.Count);)
-            {
-                string js = hasil_arr[i];
-                string strq = "";
-                if (js.Equals("Balita"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga " +
-                    "where 0 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 4";
-                }
-                else if (js.Equals("Anak"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga " +
-                    "where 4 < CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) < 15";
-                }
-                else if (js.Equals("PUS"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga " +
-                    "where 15 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 49";
-                }
-                else if (js.Equals("WUS"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga " +
-                    "where 20 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 45 " +
-                    "and jenis_kelamin = 'P'";
-                }
-                else if (js.Equals("Pra-Lansia"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga " +
-                    "where 45 <= CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105) " +
-                    "and CONVERT(int, YEAR(Getdate()),105) -convert(int, year(tanggal_lahir), 105) <= 59";
-                }
-                else
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga " +
-                    "where 60 < CONVERT(int, YEAR(Getdate()), 105) - convert(int, year(tanggal_lahir), 105)";
-                }
-                SqlCommand cm = new SqlCommand(strq, koneksi);
-                object res = cm.ExecuteScalar();
-                hs = Convert.ToDouble(res);
-                Console.WriteLine(hasil_arrs[i] + " arrs[i]");
-                //Console.WriteLine(hs + " hs 2");
-                if (hs.Equals(0))
-                {
-                    //Console.WriteLine(hasil_arr[i] + " loop nomor 2");
-                    //Console.WriteLine(hasil_arrs[i] + " arrs equals 0 loop nomor 2");
-                    hasil_arr.Remove(hasil_arr[i]);
-                    hasil_arrs.Remove(hasil_arrs[i]);
-                }
+                total += hs;
                 hasil_arrs.Add(hs);
-                //Get the Total of Orders for each City.
-                y[i] = hasil_arrs[i];
-                i++;
             }
 
-            //testc git
+            // Filter out categories with null data
+            List<string> categoriesWithData = new List<string>();
+            List<double> countsWithData = new List<double>();
+            for (int i = 0; i < hasil_arr.Count; i++)
+            {
+                if (hasil_arrs[i] > 0)
+                {
+                    categoriesWithData.Add(hasil_arr[i]);
+                    countsWithData.Add(hasil_arrs[i]);
+                }
+            }
+
+            // Calculate percentages
+            List<double> percentages = countsWithData.Select(count => (count / total) * 100).ToList();
 
             koneksi.Close();
             ListViewItem temp;
-            var n = 0;
-            foreach (var i in hasil_arr)
+            for (int i = 0; i < categoriesWithData.Count; i++)
             {
-                temp = new ListViewItem(new string[] { i, hasil_arrs[n++].ToString()});
+                temp = new ListViewItem(new string[] { categoriesWithData[i], countsWithData[i].ToString(), percentages[i].ToString("0.00") + "%" });
                 listView1.Items.Add(temp);
             }
-
 
             if (listView1.Items.Count != 0)
             {
@@ -201,8 +131,14 @@ namespace siDIA_Project
                 comboBox1.Show();
                 listView1.Show();
                 chart1.Series[0].ChartType = SeriesChartType.Pie;
-                chart1.Series[0].Points.DataBindXY(x, y);
+                chart1.Series[0].Points.DataBindXY(categoriesWithData, percentages);
                 chart1.Legends[0].Enabled = true;
+
+                // Add percentage labels
+                for (int i = 0; i < chart1.Series[0].Points.Count; i++)
+                {
+                    chart1.Series[0].Points[i].Label = $"{categoriesWithData[i]}: {percentages[i]:0.00}%";
+                }
             }
             else
             {
@@ -214,7 +150,8 @@ namespace siDIA_Project
             }
         }
 
-        private void displayPekerjaan ()
+
+        private void displayPekerjaan()
         {
             double hs;
             SqlConnection koneksi = new SqlConnection();
@@ -231,13 +168,11 @@ namespace siDIA_Project
             hasil_arr.Add("Lainnya");
             hasil_arr.Add("Wirausaha");
 
+            double total = 0;
 
-            for (int i = 0; i < (hasil_arr.Count);)
+            foreach (var js in hasil_arr)
             {
-                Console.WriteLine("MULAI ULANG");
-                string js = hasil_arr[i];
                 string strs = "";
-
                 if (js.Equals("Pelajar/Mahasiswa"))
                 {
                     strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Pelajar/Mahasiswa'";
@@ -257,7 +192,8 @@ namespace siDIA_Project
                 else if (js.Equals("Buruh/Karyawan"))
                 {
                     strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Buruh/Karyawan'";
-                }else if (js.Equals("Lainnya"))
+                }
+                else if (js.Equals("Lainnya"))
                 {
                     strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Lainnya'";
                 }
@@ -268,92 +204,32 @@ namespace siDIA_Project
                 SqlCommand cm = new SqlCommand(strs, koneksi);
                 object res = cm.ExecuteScalar();
                 hs = Convert.ToDouble(res);
-                if (hs.Equals(0))
-                {
-                    //Console.WriteLine("index " + i + " label " + js);
-                    //Console.WriteLine("label " + js + " = " + hs);
-                    //Console.WriteLine(hasil_arrs[i] + " arrs equals 0 loop 1");
-                    hasil_arr.Remove(js);
-                    //Console.WriteLine(js + " telah dihapus");
-                    //Console.WriteLine("panjang " + hasil_arr.Count());
-                    //Console.WriteLine("panjang arrs equals = " + hasil_arrs.Count());
-                }
-                else
-                {
-                    //Console.WriteLine("panjang arrs = " + hasil_arrs.Count());
-                    hasil_arrs.Add(hs);
-                    //Console.WriteLine("panjang arrs after add hs = " + hasil_arrs.Count());
-                    //Console.WriteLine("index = " + i + " label " + hasil_arr[i] + " ditambahkan dengan data = " + hasil_arrs[i]);
-                    //Console.WriteLine("panjang arr = " + hasil_arr.Count());
-                    //Console.WriteLine("panjang arrs else = " + hasil_arrs.Count());
-                    i++;
-                }
-            }
-
-            //Get count label.
-            string[] x = hasil_arr.ToArray();
-            double[] y = new double[hasil_arrs.Count];
-            for (int i = 0; i < (hasil_arr.Count);)
-            {
-                string js = hasil_arr[i];
-                string strq = "";
-                if (js.Equals("Pelajar/Mahasiswa"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Pelajar/Mahasiswa'";
-                }
-                else if (js.Equals("IRT"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Ibu Rumah Tangga'";
-                }
-                else if (js.Equals("PNS"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'PNS'";
-                }
-                else if (js.Equals("Tidak Bekerja"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Tidak Bekerja'";
-                }
-                else if (js.Equals("Buruh/Karyawan"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Buruh/Karyawan'";
-                }
-                else if (js.Equals("Lainnya"))
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Lainnya'";
-                }
-                else
-                {
-                    strq = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Wirausaha'";
-                }
-                SqlCommand cm = new SqlCommand(strq, koneksi);
-                object res = cm.ExecuteScalar();
-                hs = Convert.ToDouble(res);
-                Console.WriteLine(hasil_arrs[i] + " arrs[i]");
-                //Console.WriteLine(hs + " hs 2");
-                if (hs.Equals(0))
-                {
-                    //Console.WriteLine(hasil_arr[i] + " loop nomor 2");
-                    //Console.WriteLine(hasil_arrs[i] + " arrs equals 0 loop nomor 2");
-                    hasil_arr.Remove(hasil_arr[i]);
-                    hasil_arrs.Remove(hasil_arrs[i]);
-                }
+                total += hs;
                 hasil_arrs.Add(hs);
-                //Get the Total of Orders for each City.
-                y[i] = hasil_arrs[i];
-                i++;
             }
 
-            //testc git
+            // Filter out categories with null data
+            List<string> categoriesWithData = new List<string>();
+            List<double> countsWithData = new List<double>();
+            for (int i = 0; i < hasil_arr.Count; i++)
+            {
+                if (hasil_arrs[i] > 0)
+                {
+                    categoriesWithData.Add(hasil_arr[i]);
+                    countsWithData.Add(hasil_arrs[i]);
+                }
+            }
+
+            // Calculate percentages
+            List<double> percentages = countsWithData.Select(count => (count / total) * 100).ToList();
 
             koneksi.Close();
             ListViewItem temp;
-            var n = 0;
-            foreach (var i in hasil_arr)
+            for (int i = 0; i < categoriesWithData.Count; i++)
             {
-                temp = new ListViewItem(new string[] { i, hasil_arrs[n++].ToString() });
+                temp = new ListViewItem(new string[] { categoriesWithData[i], countsWithData[i].ToString(), percentages[i].ToString("0.00") + "%" });
                 listView1.Items.Add(temp);
             }
-
 
             if (listView1.Items.Count != 0)
             {
@@ -362,8 +238,14 @@ namespace siDIA_Project
                 comboBox1.Show();
                 listView1.Show();
                 chart1.Series[0].ChartType = SeriesChartType.Pie;
-                chart1.Series[0].Points.DataBindXY(x, y);
+                chart1.Series[0].Points.DataBindXY(categoriesWithData, percentages);
                 chart1.Legends[0].Enabled = true;
+
+                // Add percentage labels
+                for (int i = 0; i < chart1.Series[0].Points.Count; i++)
+                {
+                    chart1.Series[0].Points[i].Label = $"{categoriesWithData[i]}: {percentages[i]:0.00}%";
+                }
             }
             else
             {
@@ -374,6 +256,7 @@ namespace siDIA_Project
                 MessageBox.Show("Data Tidak Ada", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
