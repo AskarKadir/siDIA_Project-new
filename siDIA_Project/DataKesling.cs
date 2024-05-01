@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace siDIA_Project
@@ -107,23 +108,32 @@ namespace siDIA_Project
             SqlConnection koneksi = new SqlConnection();
             koneksi.ConnectionString = kn.strKoneksi();
             koneksi.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select w.nama from rumah r " +
-                "join warga w on r.id_rumah = w.id_rumah " +
-                "where w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga'", koneksi);
+            SqlDataAdapter da = new SqlDataAdapter("SELECT w.nama FROM rumah r " +
+                "JOIN warga w ON r.id_rumah = w.id_rumah " +
+                "LEFT JOIN kesling k ON r.id_rumah = k.id_rumah " +
+                "WHERE w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga' " +
+                "AND k.id_rumah IS NULL", koneksi);
             DataSet ds = new DataSet();
             da.Fill(ds);
-            koneksi.Close();
+            if (ds.Tables[0].Rows.Count != 0)
+            {
+                koneksi.Close();
 
-            cNmRT.DisplayMember = "nama";
-            cNmRT.ValueMember = "nama";
-            cNmRT.DataSource = ds.Tables[0];
+                cNmRT.DisplayMember = "nama";
+                cNmRT.ValueMember = "nama";
+                cNmRT.DataSource = ds.Tables[0];
 
-            cNmRT.Enabled = true;
-            btnRefresh.Enabled = true;
-            btnSimpan.Enabled = true;
-            btnSimpan.Visible = true;
-            btnAdd.Visible = false;
-            btnAdd.Enabled = false;
+                cNmRT.Enabled = true;
+                btnRefresh.Enabled = true;
+                btnSimpan.Enabled = true;
+                btnSimpan.Visible = true;
+                btnAdd.Visible = false;
+                btnAdd.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Semua Kepala Keluarga Telah Terdaftar di Kesling", "Pemberitahuan", MessageBoxButtons.OK);
+            }
         }
 
         private void cNmRT_TextChanged(object sender, EventArgs e)
