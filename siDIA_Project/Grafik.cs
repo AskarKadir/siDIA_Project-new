@@ -406,8 +406,32 @@ namespace siDIA_Project
             }
             else if (fWarga.Text.Equals("Pekerjaan"))
             {
+                try
+                {
+                    if (listView1.Items.Count == 0)
+                    {
+                        displayPekerjaan();
+                    }
+                    else
+                    {
+                        for (int i = 0; i < listView1.Items.Count; i++)
+                        {
+                            if (listView1.Items[i].Selected)
+                            {
+                                listView1.Items[i].Remove();
+                                i--;
+                            }
+                        }
+                        listView1.Items.Clear();
+                        displayPekerjaan();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
                 //MessageBox.Show("Dalam Pengerjaan", listView1.Items.Count.ToString(), MessageBoxButtons.OK);
-                displayPekerjaan();
+                
             }
         }
 
