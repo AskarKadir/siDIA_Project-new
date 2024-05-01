@@ -26,8 +26,8 @@ namespace siDIA_Project
             if (timeLeft == 0)
             {
                 timer1.Stop();
-                home lp = new home();
-                lp.Show();
+                Login login = new Login();
+                login.Show();
                 this.Hide();
 
             }
@@ -52,7 +52,7 @@ namespace siDIA_Project
                 }
                 timeLeft = 20;
                 timer1.Start();
-
+                
             }
             catch (Exception ex)
             {
