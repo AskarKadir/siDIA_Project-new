@@ -119,6 +119,7 @@ namespace siDIA_Project
                                 MessageBoxIcon.Information);
                     clearForm();
                     dgv();
+                    jmlWrgM();
                 }
             }
         }
@@ -138,6 +139,7 @@ namespace siDIA_Project
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            jmlWrgM();
             dgv();
             defaultbuttonstate();
             clearForm();
@@ -181,7 +183,7 @@ namespace siDIA_Project
                         cekkoneksi.ConnectionString = kn.strKoneksi();
                         cekkoneksi.Open();
                         SqlCommand cekcm = new SqlCommand("select nik,nama from warga where nik='" +
-                            nik+
+                            nik +
                             "' and " +
                             "nama='" +
                             nama +
@@ -193,31 +195,42 @@ namespace siDIA_Project
                         }
                         if (datafound == 1)
                         {
-                            int hasil = 0;
+                            int maxNoKM = 0;
                             SqlConnection koneksi = new SqlConnection();
                             koneksi.ConnectionString = kn.strKoneksi();
                             koneksi.Open();
-                            SqlCommand cm = new SqlCommand("select count(No_Kematian) as 'JmlhM' from kematian", koneksi);
+                            SqlCommand cm = new SqlCommand("select max(cast(substring(No_Kematian, 3, len(No_Kematian) - 2) as int)) as 'MaxNoKM' from kematian", koneksi);
                             cm.CommandType = CommandType.Text;
                             SqlDataReader dr = cm.ExecuteReader();
-                            while (dr.Read())
+                            if (dr.Read() && !dr.IsDBNull(0))
                             {
-                                hasil = Convert.ToInt32(dr["JmlhM"]) + 1;
+                                maxNoKM = Convert.ToInt32(dr["MaxNoKM"]);
                             }
                             dr.Close();
-                            if (hasil < 10)
+
+                            noKM = "";
+
+                            // Check if there are deleted entries with lower identifiers
+                            for (int i = 1; i <= maxNoKM; i++)
                             {
-                                noKM = "KM" + "00" + hasil;
-                            }
-                            else if (hasil >= 10)
-                            {
-                                noKM = "KM" + "0" + hasil;
-                            }
-                            else if (hasil > 99)
-                            {
-                                noKM = "KM" + hasil;
+                                string potentialNoKM = "KM" + i.ToString().PadLeft(3, '0');
+                                SqlCommand checkCmd = new SqlCommand("select count(No_Kematian) from kematian where No_Kematian = @No_Kematian", koneksi);
+                                checkCmd.Parameters.AddWithValue("@No_Kematian", potentialNoKM);
+                                int count = (int)checkCmd.ExecuteScalar();
+                                if (count == 0)
+                                {
+                                    // This identifier is available
+                                    noKM = potentialNoKM;
+                                    break;
+                                }
                             }
 
+                            if (noKM == "")
+                            {
+                                // If no deleted identifiers are available, generate a new one
+                                int nextNoKM = maxNoKM + 1;
+                                noKM = "KM" + nextNoKM.ToString().PadLeft(3, '0');
+                            }
                             string str = "";
 
                             str = "insert into kematian (No_Kematian,no_Reg, No_KK,NIK,Nama,status_dalam_keluarga," +
@@ -265,7 +278,7 @@ namespace siDIA_Project
                         }
                         else
                         {
-                            MessageBox.Show("Kesalahan Input Data, Mohon Diperiksa Kembali","Tidak Dapat Menemukan Data",MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Kesalahan Input Data, Mohon Diperiksa Kembali", "Tidak Dapat Menemukan Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
@@ -303,12 +316,13 @@ namespace siDIA_Project
             }
             //defaultbuttonstate();
 
-            
+
             //    clearForm();
             //    dgv();
             //    jmlWrgM();
             //}
         }
+
 
         private void clearForm()
         {
@@ -670,6 +684,19 @@ namespace siDIA_Project
                 //col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
             koneksi.Close();
+        }
+
+        static string GenerateRandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var stringBuilder = new StringBuilder(length);
+            for (int i = 0; i < length; i++)
+            {
+                stringBuilder.Append(chars[random.Next(chars.Length)]);
+            }
+            Console.WriteLine(stringBuilder.ToString());
+            return stringBuilder.ToString();
         }
     }
 }
