@@ -597,7 +597,7 @@ namespace siDIA_Project
 
             string noRmh = tRmh.Text;
             DialogResult dg;
-            dg = MessageBox.Show("Apakah anda ingin mengubah data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            dg = MessageBox.Show("Apakah anda ingin menghapus data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (dg == DialogResult.Yes)
             {
