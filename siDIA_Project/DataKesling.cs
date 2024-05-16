@@ -14,6 +14,9 @@ namespace siDIA_Project
 {
     public partial class DataKesling : Form
     {
+
+        bool addstate = false;
+
         Koneksi kn = new Koneksi();
         public DataKesling()
         {
@@ -101,10 +104,17 @@ namespace siDIA_Project
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             clearForm();
+            addstate = false;
+            textBoxCariNama.Visible = false;
+            textBoxCariNama.Enabled = false;
+            cNmRT.Visible = true;
+            cNmRT.Enabled = false;
+            dgv();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            addstate = true;
             SqlConnection koneksi = new SqlConnection();
             koneksi.ConnectionString = kn.strKoneksi();
             koneksi.Open();
@@ -118,6 +128,7 @@ namespace siDIA_Project
             if (ds.Tables[0].Rows.Count != 0)
             {
                 koneksi.Close();
+
 
                 cNmRT.DisplayMember = "nama";
                 cNmRT.ValueMember = "nama";
@@ -286,6 +297,7 @@ namespace siDIA_Project
 
         private void btnSimpan_Click(object sender, EventArgs e)
         {
+            addstate = false;
             string nRmh = tRmh.Text;
             int jmlhA = int.Parse(tjART.Text);
             int jmlhK = int.Parse(tJKK.Text);
@@ -372,10 +384,13 @@ namespace siDIA_Project
 
         private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            Console.WriteLine("tes addstate = " + addstate);
             if (e.RowIndex < 0 || e.ColumnIndex < 0)
                 return;
+            SqlConnection koneksi = new SqlConnection();
+            koneksi.ConnectionString = kn.strKoneksi();
+            koneksi.Open();
             string nmKRT = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[0].Value);
-
             string nRmh = "";
             int jmlhA = 0;
             int jmlhK = 0;
@@ -393,95 +408,99 @@ namespace siDIA_Project
             string P4K = "";
             string kRmh = "";
 
-            SqlConnection koneksi = new SqlConnection();
-            koneksi.ConnectionString = kn.strKoneksi();
-            koneksi.Open();
-            SqlDataAdapter da = new SqlDataAdapter("select w.nama from rumah r " +
-                "join warga w on r.id_rumah = w.id_rumah " +
-                "where w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga'", koneksi);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-
-            cNmRT.DisplayMember = "nama";
-            cNmRT.ValueMember = "nama";
-            cNmRT.DataSource = ds.Tables[0];
-            SqlCommand cmd = new SqlCommand("select Jmlh_Total_Anggota_RT,Jmlh_KK,Balita,PUS,WUS,Buta,Ibu_Hamil," +
-                    "Ibu_Menyusui,Lansia,Mempunyai_Jamban,Mempunyai_Sumber_Air,Mempunyai_Tmpt_Sampah," +
-                    "Mempunyai_Saluran_Limbah,Stiker_P4K,KriteriaRumah,id_rumah " +
-                    "from kesling where id_rumah = (select id_rumah from warga where nama = @nKRT)", koneksi);
-            cmd.CommandType = CommandType.Text;
-            cmd.Parameters.Add(new SqlParameter("@nKRT", nmKRT));
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            if (addstate == true)
             {
-                jmlhA = int.Parse(dr["Jmlh_Total_Anggota_RT"].ToString());
-                jmlhK = int.Parse(dr["Jmlh_KK"].ToString());
-                jBalita = int.Parse(dr["Balita"].ToString());
-                jPUS = int.Parse(dr["PUS"].ToString());
-                jWUS = int.Parse(dr["WUS"].ToString());
-                jButa = int.Parse(dr["Buta"].ToString());
-                jHamil = int.Parse(dr["Ibu_Hamil"].ToString());
-                jBuSui = int.Parse(dr["Ibu_Menyusui"].ToString());
-                jLansia = int.Parse(dr["Lansia"].ToString());
-                jamban = dr["Mempunyai_Jamban"].ToString();
-                air = dr["Mempunyai_Sumber_Air"].ToString();
-                sampah = dr["Mempunyai_Tmpt_Sampah"].ToString();
-                limbah = dr["Mempunyai_Saluran_Limbah"].ToString();
-                P4K = dr["Stiker_P4K"].ToString();
-                kRmh = dr["KriteriaRumah"].ToString();
-                nRmh = dr["id_rumah"].ToString();
-
-            }
-            dr.Close();
-
-            if (air.Equals("PDAM") || air.Equals("Sumur") ||
-                    air.Equals("Sungai"))
-            {
-                cNmRT.Text = nmKRT;
+                textBoxCariNama.Text = nmKRT;
+                nRmh = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[1].Value);
+                SqlDataAdapter da = new SqlDataAdapter("select id_rumah from rumah where id_rumah = '"+
+                    nRmh + 
+                    "'", koneksi);
                 tRmh.Text = nRmh;
-                tjART.Text = jmlhA.ToString();
-                tJKK.Text = jmlhK.ToString();
-                tBalita.Text = jBalita.ToString();
-                tPUS.Text = jPUS.ToString();
-                tWUS.Text = jWUS.ToString();
-                tButa.Text = jButa.ToString();
-                tHamil.Text = jHamil.ToString();
-                tBuSui.Text = jBuSui.ToString();
-                tLansia.Text = jLansia.ToString();
-                cJamban.Text = jamban;
-                cAir.Text = air;
-                cSampah.Text = sampah;
-                cLimbah.Text = limbah;
-                cP4K.Text = P4K;
-                cKRmh.Text = kRmh;
             }
             else
             {
-                cNmRT.Text = nmKRT;
-                tRmh.Text = nRmh;
-                tjART.Text = jmlhA.ToString();
-                tJKK.Text = jmlhK.ToString();
-                tBalita.Text = jBalita.ToString();
-                tPUS.Text = jPUS.ToString();
-                tWUS.Text = jWUS.ToString();
-                tButa.Text = jButa.ToString();
-                tHamil.Text = jHamil.ToString();
-                tBuSui.Text = jBuSui.ToString();
-                tLansia.Text = jLansia.ToString();
-                cJamban.Text = jamban;
-                cAir.Text = "Lainnya";
-                tAir.Text = air;
-                cSampah.Text = sampah;
-                cLimbah.Text = limbah;
-                cP4K.Text = P4K;
-                cKRmh.Text = kRmh;
+                cNmRT.Items.Add(nmKRT); 
+                SqlCommand cmd = new SqlCommand("select Jmlh_Total_Anggota_RT,Jmlh_KK,Balita,PUS,WUS,Buta,Ibu_Hamil," +
+                        "Ibu_Menyusui,Lansia,Mempunyai_Jamban,Mempunyai_Sumber_Air,Mempunyai_Tmpt_Sampah," +
+                        "Mempunyai_Saluran_Limbah,Stiker_P4K,KriteriaRumah,id_rumah " +
+                        "from kesling where id_rumah = (select id_rumah from warga where nama = @nKRT)", koneksi);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.Add(new SqlParameter("@nKRT", nmKRT));
+                SqlDataReader dr = cmd.ExecuteReader();
+                DataSet ds = new DataSet();
+                while (dr.Read())
+                {
+                    jmlhA = int.Parse(dr["Jmlh_Total_Anggota_RT"].ToString());
+                    jmlhK = int.Parse(dr["Jmlh_KK"].ToString());
+                    jBalita = int.Parse(dr["Balita"].ToString());
+                    jPUS = int.Parse(dr["PUS"].ToString());
+                    jWUS = int.Parse(dr["WUS"].ToString());
+                    jButa = int.Parse(dr["Buta"].ToString());
+                    jHamil = int.Parse(dr["Ibu_Hamil"].ToString());
+                    jBuSui = int.Parse(dr["Ibu_Menyusui"].ToString());
+                    jLansia = int.Parse(dr["Lansia"].ToString());
+                    jamban = dr["Mempunyai_Jamban"].ToString();
+                    air = dr["Mempunyai_Sumber_Air"].ToString();
+                    sampah = dr["Mempunyai_Tmpt_Sampah"].ToString();
+                    limbah = dr["Mempunyai_Saluran_Limbah"].ToString();
+                    P4K = dr["Stiker_P4K"].ToString();
+                    kRmh = dr["KriteriaRumah"].ToString();
+                    nRmh = dr["id_rumah"].ToString();
+
+                }
+                dr.Close();
+
+
+                if (air.Equals("PDAM") || air.Equals("Sumur") ||
+                        air.Equals("Sungai"))
+                {
+                    cNmRT.Text = nmKRT;
+                    tRmh.Text = nRmh;
+                    tjART.Text = jmlhA.ToString();
+                    tJKK.Text = jmlhK.ToString();
+                    tBalita.Text = jBalita.ToString();
+                    tPUS.Text = jPUS.ToString();
+                    tWUS.Text = jWUS.ToString();
+                    tButa.Text = jButa.ToString();
+                    tHamil.Text = jHamil.ToString();
+                    tBuSui.Text = jBuSui.ToString();
+                    tLansia.Text = jLansia.ToString();
+                    cJamban.Text = jamban;
+                    cAir.Text = air;
+                    cSampah.Text = sampah;
+                    cLimbah.Text = limbah;
+                    cP4K.Text = P4K;
+                    cKRmh.Text = kRmh;
+                }
+                else
+                {
+                    cNmRT.Text = nmKRT;
+                    tRmh.Text = nRmh;
+                    tjART.Text = jmlhA.ToString();
+                    tJKK.Text = jmlhK.ToString();
+                    tBalita.Text = jBalita.ToString();
+                    tPUS.Text = jPUS.ToString();
+                    tWUS.Text = jWUS.ToString();
+                    tButa.Text = jButa.ToString();
+                    tHamil.Text = jHamil.ToString();
+                    tBuSui.Text = jBuSui.ToString();
+                    tLansia.Text = jLansia.ToString();
+                    cJamban.Text = jamban;
+                    cAir.Text = "Lainnya";
+                    tAir.Text = air;
+                    cSampah.Text = sampah;
+                    cLimbah.Text = limbah;
+                    cP4K.Text = P4K;
+                    cKRmh.Text = kRmh;
+                }
+                koneksi.Close();
+                btnAdd.Enabled = false;
+                btnRefresh.Enabled = true;
+                btnEdit.Enabled = true;
+                btnHapus.Enabled = true;
+                dataGridView1.Enabled = false;
             }
-            koneksi.Close();
-            btnAdd.Enabled = false;
-            btnRefresh.Enabled = true;
-            btnEdit.Enabled = true;
-            btnHapus.Enabled = true;
-            dataGridView1.Enabled = false;
+            
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -622,6 +641,94 @@ namespace siDIA_Project
             else
             {
                 dgv();
+            }
+        }
+
+        private void searchicon_Click(object sender, EventArgs e)
+        {
+            cNmRT.Enabled = false;
+            cNmRT.Visible = false;
+
+            textBoxCariNama.Visible = true;
+            textBoxCariNama.Enabled = true;
+
+            string nRmh = "";
+            int jmlhA = 0;
+            int jmlhK = 0;
+            int jBalita = 0;
+            int jPUS = 0;
+            int jWUS = 0;
+            int jButa = 0;
+            int jHamil = 0;
+            int jBuSui = 0;
+            int jLansia = 0;
+            string jamban = "";
+            string air = "";
+            string sampah = "";
+            string limbah = "";
+            string P4K = "";
+            string kRmh = "";
+
+            cNmRT.Text = "";
+            tRmh.Text = nRmh;
+            tjART.Text = jmlhA.ToString();
+            tJKK.Text = jmlhK.ToString();
+            tBalita.Text = jBalita.ToString();
+            tPUS.Text = jPUS.ToString();
+            tWUS.Text = jWUS.ToString();
+            tButa.Text = jButa.ToString();
+            tHamil.Text = jHamil.ToString();
+            tBuSui.Text = jBuSui.ToString();
+            tLansia.Text = jLansia.ToString();
+            cJamban.Text = jamban;
+            cAir.Text = air;
+            cSampah.Text = sampah;
+            cLimbah.Text = limbah;
+            cP4K.Text = P4K;
+            cKRmh.Text = kRmh;
+
+            SqlConnection koneksi = new SqlConnection();
+            koneksi.ConnectionString = kn.strKoneksi();
+            koneksi.Open();
+            SqlDataAdapter da = new SqlDataAdapter("SELECT w.nama, w.id_rumah FROM rumah r " +
+                   "JOIN warga w ON r.id_rumah = w.id_rumah " +
+                   "LEFT JOIN kesling k ON r.id_rumah = k.id_rumah " +
+                   "WHERE w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga' " +
+                   "AND k.id_rumah IS NULL", koneksi);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            dataGridView1.DataSource = ds.Tables[0];
+        }
+
+        private void textBoxCariNama_TextChanged(object sender, EventArgs e)
+        {
+            SqlConnection koneksi = new SqlConnection();
+            koneksi.ConnectionString = kn.strKoneksi();
+            koneksi.Open();
+
+            if (textBoxCariNama.Text == "")
+            {
+
+                SqlDataAdapter da = new SqlDataAdapter("SELECT w.nama, w.id_rumah FROM rumah r " +
+                    "JOIN warga w ON r.id_rumah = w.id_rumah " +
+                    "LEFT JOIN kesling k ON r.id_rumah = k.id_rumah " +
+                    "WHERE w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga' " +
+                    "AND k.id_rumah IS NULL", koneksi);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dataGridView1.DataSource = ds.Tables[0];
+            }
+            else
+            {
+                SqlDataAdapter da = new SqlDataAdapter("SELECT w.nama, w.id_rumah FROM rumah r " +
+                    "JOIN warga w ON r.id_rumah = w.id_rumah " +
+                    "LEFT JOIN kesling k ON r.id_rumah = k.id_rumah " +
+                    "WHERE w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga' " +
+                    "AND k.id_rumah IS NULL and w.nama like '"
+                    + textBoxCariNama.Text + "%'", koneksi);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                dataGridView1.DataSource = ds.Tables[0];
             }
         }
     }

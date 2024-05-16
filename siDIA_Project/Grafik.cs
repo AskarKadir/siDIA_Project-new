@@ -23,13 +23,6 @@ namespace siDIA_Project
 
             chart1.Hide();
             listView1.Hide();
-            comboBox1.Hide();
-            label3.Hide();
-
-            comboBox1.Items.Add("Pie");
-            comboBox1.Items.Add("Line");
-            comboBox1.Items.Add("Bar");
-            comboBox1.Items.Add("Column");
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
@@ -126,26 +119,31 @@ namespace siDIA_Project
 
             if (listView1.Items.Count != 0)
             {
-                chart1.Show();
-                label3.Show();
-                comboBox1.Show();
+                chart1.Show(); ;
                 listView1.Show();
                 chart1.Series[0].ChartType = SeriesChartType.Pie;
                 chart1.Series[0].Points.DataBindXY(categoriesWithData, percentages);
                 chart1.Legends[0].Enabled = true;
 
-                // Add percentage labels
+                // Add percentage labels to the pie chart
+                chart1.Series[0].IsValueShownAsLabel = true;
+                chart1.Series[0]["PieLabelStyle"] = "Percent"; // Show percentage labels
+
+                // Remove percentages from legend labels
+                foreach (var point in chart1.Series[0].Points)
+                {
+                    point.LegendText = point.AxisLabel;
+                }
+
                 for (int i = 0; i < chart1.Series[0].Points.Count; i++)
                 {
-                    chart1.Series[0].Points[i].Label = $"{categoriesWithData[i]}: {percentages[i]:0.00}%";
+                    chart1.Series[0].Points[i].Label = $"{percentages[i]:0.00}%";
                 }
             }
             else
             {
                 chart1.Hide();
                 listView1.Hide();
-                comboBox1.Hide();
-                label3.Hide();
                 MessageBox.Show("Data Tidak Ada", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
@@ -160,47 +158,30 @@ namespace siDIA_Project
             List<string> hasil_arr = new List<string>();
             List<double> hasil_arrs = new List<double>();
 
+            // Add known occupation categories
             hasil_arr.Add("Pelajar/Mahasiswa");
             hasil_arr.Add("IRT");
             hasil_arr.Add("PNS");
             hasil_arr.Add("Tidak Bekerja");
             hasil_arr.Add("Buruh/Karyawan");
-            hasil_arr.Add("Lainnya");
-            hasil_arr.Add("Wirausaha");
+
+            // Query database for other occupation categories dynamically
+            string query = "SELECT DISTINCT pekerjaan FROM warga WHERE pekerjaan NOT IN ('Pelajar/Mahasiswa', 'IRT', 'PNS', 'Tidak Bekerja', 'Buruh/Karyawan')";
+            SqlCommand cmd = new SqlCommand(query, koneksi);
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string occupation = reader["pekerjaan"].ToString();
+                    hasil_arr.Add(occupation);
+                }
+            }
 
             double total = 0;
 
             foreach (var js in hasil_arr)
             {
-                string strs = "";
-                if (js.Equals("Pelajar/Mahasiswa"))
-                {
-                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Pelajar/Mahasiswa'";
-                }
-                else if (js.Equals("IRT"))
-                {
-                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Ibu Rumah Tangga'";
-                }
-                else if (js.Equals("PNS"))
-                {
-                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'PNS'";
-                }
-                else if (js.Equals("Tidak Bekerja"))
-                {
-                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Tidak Bekerja'";
-                }
-                else if (js.Equals("Buruh/Karyawan"))
-                {
-                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Buruh/Karyawan'";
-                }
-                else if (js.Equals("Lainnya"))
-                {
-                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Lainnya'";
-                }
-                else
-                {
-                    strs = "select count(No_Reg) as totalWarga from warga where pekerjaan = 'Wirausaha'";
-                }
+                string strs = $"select count(No_Reg) as totalWarga from warga where pekerjaan = '{js}'";
                 SqlCommand cm = new SqlCommand(strs, koneksi);
                 object res = cm.ExecuteScalar();
                 hs = Convert.ToDouble(res);
@@ -233,28 +214,34 @@ namespace siDIA_Project
 
             if (listView1.Items.Count != 0)
             {
-                chart1.Show();
-                label3.Show();
-                comboBox1.Show();
+                chart1.Show(); ;
                 listView1.Show();
                 chart1.Series[0].ChartType = SeriesChartType.Pie;
                 chart1.Series[0].Points.DataBindXY(categoriesWithData, percentages);
                 chart1.Legends[0].Enabled = true;
 
-                // Add percentage labels
+                // Add percentage labels to the pie chart
+                chart1.Series[0].IsValueShownAsLabel = true;
+                chart1.Series[0]["PieLabelStyle"] = "Percent"; // Show percentage labels
+
+                // Remove percentages from legend labels
+                foreach (var point in chart1.Series[0].Points)
+                {
+                    point.LegendText = point.AxisLabel;
+                }
+
                 for (int i = 0; i < chart1.Series[0].Points.Count; i++)
                 {
-                    chart1.Series[0].Points[i].Label = $"{categoriesWithData[i]}: {percentages[i]:0.00}%";
+                    chart1.Series[0].Points[i].Label = $"{percentages[i]:0.00}%";
                 }
             }
             else
             {
                 chart1.Hide();
                 listView1.Hide();
-                comboBox1.Hide();
-                label3.Hide();
                 MessageBox.Show("Data Tidak Ada", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
         }
 
 
@@ -320,7 +307,7 @@ namespace siDIA_Project
 
         private void comboBox1_TextChanged(object sender, EventArgs e)
         {
-            chart1.Series[0].ChartType = (SeriesChartType)Enum.Parse(typeof(SeriesChartType), comboBox1.SelectedItem.ToString());
+            //chart1.Series[0].ChartType = (SeriesChartType)Enum.Parse(typeof(SeriesChartType), comboBox1.SelectedItem.ToString());
         }
     }
 }
