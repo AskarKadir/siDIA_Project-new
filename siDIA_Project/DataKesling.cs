@@ -36,13 +36,29 @@ namespace siDIA_Project
             koneksi.ConnectionString = kn.strKoneksi();
             koneksi.Open();
             string str = "select w.nama as 'Nama Kepala Rumah Tangga', k.Jmlh_Total_Anggota_RT " +
-                "as 'Jumal Anggota Keluarga',k.Jmlh_KK as 'Jumlah Kepala Keluarga' " +
+                "as 'Jumlah Anggota Keluarga',k.Jmlh_KK as 'Jumlah Kepala Keluarga' " +
                 "from Kesling k join rumah r on k.id_rumah = k.id_rumah " +
                 "join warga w on r.id_rumah = w.id_rumah where " +
                 "w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga' and r.id_rumah = k.id_rumah";
             SqlDataAdapter ad = new SqlDataAdapter(str, koneksi);
             DataSet ds = new DataSet();
             ad.Fill(ds);
+            // Check if the DataSet contains any tables and rows
+            if (ds.Tables.Count > 0)
+            {
+                DataTable dt = ds.Tables[0];
+                foreach (DataRow row in dt.Rows)
+                {
+                    // Print each row's data to the console
+                    Console.WriteLine($"Nama Kepala Rumah Tangga: {row["Nama Kepala Rumah Tangga"]}, " +
+                                      $"Jumlah Anggota Keluarga: {row["Jumlah Anggota Keluarga"]}, " +
+                                      $"Jumlah Kepala Keluarga: {row["Jumlah Kepala Keluarga"]}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No data found.");
+            }
             dataGridView1.DataSource = ds.Tables[0];
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
@@ -54,6 +70,7 @@ namespace siDIA_Project
 
         private void clearForm()
         {
+            cNmRT.DataSource = null;
             cNmRT.SelectedItem = null;
             tRmh.Text = "";
             tjART.Text = "";
