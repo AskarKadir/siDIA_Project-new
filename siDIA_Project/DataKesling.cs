@@ -160,6 +160,7 @@ namespace siDIA_Project
             }
             else
             {
+                addstate = false;
                 MessageBox.Show("Semua Kepala Keluarga Telah Terdaftar di Kesling", "Pemberitahuan", MessageBoxButtons.OK);
             }
         }
