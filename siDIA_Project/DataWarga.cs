@@ -7,8 +7,10 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace siDIA_Project
 {
@@ -396,6 +398,13 @@ namespace siDIA_Project
             }
         }
 
+        // Event handler untuk cKK.SelectedIndexChanged
+        private void cKK_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Reset nilai cRT saat nilai cKK berubah
+            cRT.SelectedIndex = -1; // Menyetel cRT ke state 'belum dipilih
+        }
+
         private void cRT_TextChanged(object sender, EventArgs e)
         {
             if (addstate == true && editstate == false)
@@ -427,6 +436,30 @@ namespace siDIA_Project
                         tRT.Text = "RMH" + hasil + "-" + tNama.Text;
                     }
                     tRT.Visible = true;
+                    cNoReg.Visible = false;
+                }
+                else
+                {
+                    string kk = cKK.Text;
+                    Console.WriteLine("lumba wokowkw : " + kk);
+                    string nRT = "";
+                    SqlConnection koneksi = new SqlConnection();
+                    koneksi.ConnectionString = kn.strKoneksi();
+                    koneksi.Open();
+                    SqlCommand cm = new SqlCommand("select id_rumah from warga where no_KK = @nKK", koneksi);
+                    cm.CommandType = CommandType.Text;
+                    cm.Parameters.Add(new SqlParameter("@nKK", kk));
+                    SqlDataReader dr = cm.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        nRT = dr["id_rumah"].ToString();
+
+                    }
+                    dr.Close();
+                    tRT.Text = nRT;
+                    tRT.Visible = true;
+                    tRT.Enabled = false;
+                    cNoReg.Enabled = false;
                     cNoReg.Visible = false;
                 }
             }
@@ -1027,36 +1060,52 @@ namespace siDIA_Project
             }
         }
 
+        private bool messageShown = false;
+
         private void tCari_TextChanged(object sender, EventArgs e)
         {
-            if (!tCari.Text.Equals(""))
+            SqlConnection koneksi = new SqlConnection();
+            koneksi.ConnectionString = kn.strKoneksi();
+            koneksi.Open();
+            string str = "select No_KK as 'No Kartu Keluarga', Nama as 'Nama Warga' from warga where nama like @searchText";
+            SqlDataAdapter ad = new SqlDataAdapter(str, koneksi);
+            ad.SelectCommand.Parameters.AddWithValue("@searchText", tCari.Text + "%");
+            DataSet ds = new DataSet();
+            ad.Fill(ds);
+            if (string.IsNullOrEmpty(tCari.Text))
             {
-                SqlConnection koneksi = new SqlConnection();
-                koneksi.ConnectionString = kn.strKoneksi();
-                koneksi.Open();
-                string str = "select No_Reg as 'Nomer Registrasi', No_KK as 'No Kartu Keluarga', " +
-                    "Nama as 'Nama Warga', jenis_kelamin as 'Jenis Kelamin'," +
-                    " tempat_lahir as 'Tempat Lahir', tanggal_lahir as 'Tgl/Bln/Th Lahir', " +
-                    "agama as Agama, pendidikan as Pendidikan, " +
-                    "pekerjaan as Pekerjaan, status_perkawinan as 'Status Perkawinan', " +
-                    "status_bpjs as 'Status BPJS' from warga where Nama Like '%" + tCari.Text + "%'";
-                SqlDataAdapter ad = new SqlDataAdapter(str, koneksi);
-                DataSet ds = new DataSet();
+                str = "select No_KK as 'No Kartu Keluarga', Nama as 'Nama Warga' from warga ";
+                ad = new SqlDataAdapter(str, koneksi);
+                ds = new DataSet();
                 ad.Fill(ds);
+            }
+
+
+            if (ds.Tables[0].Rows.Count == 0)
+            {
+                if (!messageShown)
+                {
+                    MessageBox.Show("Data Tidak Ditemukan", "Warning");
+                    messageShown = true;
+                    str = "select No_KK as 'No Kartu Keluarga', Nama as 'Nama Warga' from warga";
+                    ad = new SqlDataAdapter(str, koneksi);
+                    ds = new DataSet();
+                    ad.Fill(ds);
+                }
+            }
+            else
+            {
                 dataGridView1.DataSource = ds.Tables[0];
                 foreach (DataGridViewColumn col in dataGridView1.Columns)
                 {
                     col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     //col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
-                koneksi.Close();
-                fWarga.Enabled = false;
+                messageShown = false; // Reset the flag when data is found
             }
-            else
-            {
-                fWarga.Enabled = true;
-                dgv();
-            }
+
+            koneksi.Close();
+            fWarga.Enabled = false;
         }
 
         private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)

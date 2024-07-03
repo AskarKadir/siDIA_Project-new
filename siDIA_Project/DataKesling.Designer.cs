@@ -50,6 +50,7 @@
             this.cAir = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.cNmRT = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tLansia = new System.Windows.Forms.TextBox();
             this.tHamil = new System.Windows.Forms.TextBox();
@@ -75,7 +76,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxCariNama = new System.Windows.Forms.TextBox();
-            this.cNmRT = new System.Windows.Forms.ComboBox();
             this.btnRefresh = new System.Windows.Forms.PictureBox();
             this.label20 = new System.Windows.Forms.Label();
             this.btnSimpan = new System.Windows.Forms.PictureBox();
@@ -97,7 +97,7 @@
             this.btnHapus.Enabled = false;
             this.btnHapus.Image = ((System.Drawing.Image)(resources.GetObject("btnHapus.Image")));
             this.btnHapus.Location = new System.Drawing.Point(220, 628);
-            this.btnHapus.Margin = new System.Windows.Forms.Padding(2);
+            this.btnHapus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnHapus.Name = "btnHapus";
             this.btnHapus.Size = new System.Drawing.Size(50, 52);
             this.btnHapus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -111,7 +111,7 @@
             this.btnEdit.Enabled = false;
             this.btnEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnEdit.Image")));
             this.btnEdit.Location = new System.Drawing.Point(152, 628);
-            this.btnEdit.Margin = new System.Windows.Forms.Padding(2);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(50, 52);
             this.btnEdit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -124,7 +124,7 @@
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
             this.btnAdd.Location = new System.Drawing.Point(84, 628);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(50, 52);
             this.btnAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -161,7 +161,7 @@
             this.topBar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.topBar.Dock = System.Windows.Forms.DockStyle.Right;
             this.topBar.Location = new System.Drawing.Point(807, 0);
-            this.topBar.Margin = new System.Windows.Forms.Padding(2);
+            this.topBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.topBar.Name = "topBar";
             this.topBar.Size = new System.Drawing.Size(39, 690);
             this.topBar.TabIndex = 10;
@@ -170,7 +170,7 @@
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
             this.pictureBox2.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(34, 33);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -181,7 +181,7 @@
             // tCari
             // 
             this.tCari.Location = new System.Drawing.Point(290, 71);
-            this.tCari.Margin = new System.Windows.Forms.Padding(2);
+            this.tCari.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tCari.Name = "tCari";
             this.tCari.Size = new System.Drawing.Size(211, 20);
             this.tCari.TabIndex = 11;
@@ -193,13 +193,14 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(436, 104);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(352, 576);
             this.dataGridView1.TabIndex = 13;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
             this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
             // 
             // groupBox1
@@ -242,9 +243,9 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.textBoxCariNama);
             this.groupBox1.Location = new System.Drawing.Point(5, 104);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Size = new System.Drawing.Size(426, 502);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
@@ -365,6 +366,17 @@
             this.label10.TabIndex = 55;
             this.label10.Text = "Ibu Menyusui";
             // 
+            // cNmRT
+            // 
+            this.cNmRT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cNmRT.Enabled = false;
+            this.cNmRT.FormattingEnabled = true;
+            this.cNmRT.Location = new System.Drawing.Point(236, 25);
+            this.cNmRT.Name = "cNmRT";
+            this.cNmRT.Size = new System.Drawing.Size(158, 21);
+            this.cNmRT.TabIndex = 41;
+            this.cNmRT.TextChanged += new System.EventHandler(this.cNmRT_TextChanged);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -390,6 +402,7 @@
             this.tHamil.Size = new System.Drawing.Size(184, 20);
             this.tHamil.TabIndex = 52;
             this.tHamil.TextChanged += new System.EventHandler(this.tHamil_TextChanged);
+            this.tHamil.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tHamil_KeyPress);
             // 
             // tButa
             // 
@@ -399,6 +412,7 @@
             this.tButa.Size = new System.Drawing.Size(184, 20);
             this.tButa.TabIndex = 51;
             this.tButa.TextChanged += new System.EventHandler(this.tButa_TextChanged);
+            this.tButa.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tButa_KeyPress);
             // 
             // tBuSui
             // 
@@ -408,6 +422,7 @@
             this.tBuSui.Size = new System.Drawing.Size(184, 20);
             this.tBuSui.TabIndex = 50;
             this.tBuSui.TextChanged += new System.EventHandler(this.tBuSui_TextChanged);
+            this.tBuSui.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBuSui_KeyPress);
             // 
             // tWUS
             // 
@@ -480,6 +495,7 @@
             this.tBalita.Name = "tBalita";
             this.tBalita.Size = new System.Drawing.Size(184, 20);
             this.tBalita.TabIndex = 39;
+            this.tBalita.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBalita_KeyPress);
             // 
             // label15
             // 
@@ -602,24 +618,13 @@
             this.textBoxCariNama.TabIndex = 66;
             this.textBoxCariNama.TextChanged += new System.EventHandler(this.textBoxCariNama_TextChanged);
             // 
-            // cNmRT
-            // 
-            this.cNmRT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cNmRT.Enabled = false;
-            this.cNmRT.FormattingEnabled = true;
-            this.cNmRT.Location = new System.Drawing.Point(236, 25);
-            this.cNmRT.Name = "cNmRT";
-            this.cNmRT.Size = new System.Drawing.Size(158, 21);
-            this.cNmRT.TabIndex = 41;
-            this.cNmRT.TextChanged += new System.EventHandler(this.cNmRT_TextChanged);
-            // 
             // btnRefresh
             // 
             this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRefresh.Enabled = false;
             this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
             this.btnRefresh.Location = new System.Drawing.Point(290, 628);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(50, 52);
             this.btnRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -644,7 +649,7 @@
             this.btnSimpan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSimpan.Image = ((System.Drawing.Image)(resources.GetObject("btnSimpan.Image")));
             this.btnSimpan.Location = new System.Drawing.Point(84, 628);
-            this.btnSimpan.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSimpan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSimpan.Name = "btnSimpan";
             this.btnSimpan.Size = new System.Drawing.Size(50, 52);
             this.btnSimpan.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -671,7 +676,7 @@
             this.Controls.Add(this.tCari);
             this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "DataKesling";
             this.Text = "DataKesling";
             ((System.ComponentModel.ISupportInitialize)(this.btnHapus)).EndInit();

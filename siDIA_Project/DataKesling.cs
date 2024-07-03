@@ -316,23 +316,25 @@ namespace siDIA_Project
         private void btnSimpan_Click(object sender, EventArgs e)
         {
             addstate = false;
-            string nRmh = tRmh.Text;
-            int jmlhA = int.Parse(tjART.Text);
-            int jmlhK = int.Parse(tJKK.Text);
-            int jBalita = int.Parse(tBalita.Text);
-            int jPUS = int.Parse(tPUS.Text);
-            int jWUS = int.Parse(tWUS.Text);
-            int jButa = int.Parse(tButa.Text);
-            int jHamil = int.Parse(tHamil.Text);
-            int jBuSui = int.Parse(tBuSui.Text);
-            int jLansia = int.Parse(tLansia.Text);
-            string jamban = cJamban.Text;
-            string air = cAir.Text;
-            string Lair = tAir.Text;
-            string sampah = cSampah.Text;
-            string limbah = cLimbah.Text;
-            string P4K = cP4K.Text;
-            string kRmh = cKRmh.Text;
+            try
+            {
+                string nRmh = tRmh.Text;
+                int jmlhA = int.Parse(tjART.Text);
+                int jmlhK = int.Parse(tJKK.Text);
+                int jBalita = int.Parse(tBalita.Text);
+                int jPUS = int.Parse(tPUS.Text);
+                int jWUS = int.Parse(tWUS.Text);
+                int jButa = int.Parse(tButa.Text);
+                int jHamil = int.Parse(tHamil.Text);
+                int jBuSui = int.Parse(tBuSui.Text);
+                int jLansia = int.Parse(tLansia.Text);
+                string jamban = cJamban.Text;
+                string air = cAir.Text;
+                string Lair = tAir.Text;
+                string sampah = cSampah.Text;
+                string limbah = cLimbah.Text;
+                string P4K = cP4K.Text;
+                string kRmh = cKRmh.Text;
 
 
             DialogResult dg;
@@ -389,13 +391,18 @@ namespace siDIA_Project
                     cmd.Parameters.Add(new SqlParameter("kR", kRmh));
                     cmd.Parameters.Add(new SqlParameter("idR", nRmh));
                 }
-                cmd.ExecuteNonQuery();
-                koneksi.Close();
-                MessageBox.Show("Data Berhasil DiTambahkan", "Sukses", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                clearForm();
-                dgv();
+                    cmd.ExecuteNonQuery();
+                    koneksi.Close();
+                    MessageBox.Show("Data Berhasil DiTambahkan", "Sukses", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                    clearForm();
+                    dgv();
 
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Kesalahan Data");
             }
 
         }
@@ -429,10 +436,17 @@ namespace siDIA_Project
             if (addstate == true)
             {
                 textBoxCariNama.Text = nmKRT;
-                nRmh = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[1].Value);
+                //Console.WriteLine("ammi keren banget : " + nmKRT);
+                try
+                {
+                    nRmh = Convert.ToString(dataGridView1.Rows[e.RowIndex].Cells[1].Value);
+
+                }
+                catch { }
                 SqlDataAdapter da = new SqlDataAdapter("select id_rumah from rumah where id_rumah = '"+
                     nRmh + 
                     "'", koneksi);
+                //Console.WriteLine("ammi keren banget : " + nRmh);
                 tRmh.Text = nRmh;
             }
             else
@@ -632,34 +646,64 @@ namespace siDIA_Project
             }
         }
 
+        private bool messageShown;
+
         private void tCari_TextChanged(object sender, EventArgs e)
         {
-            if (!tCari.Text.Equals(""))
-            {
-                SqlConnection koneksi = new SqlConnection();
-                koneksi.ConnectionString = kn.strKoneksi();
-                koneksi.Open();
-                string str = "select w.nama as 'Nama Kepala Rumah Tangga', k.Jmlh_Total_Anggota_RT " +
+            SqlConnection koneksi = new SqlConnection();
+            koneksi.ConnectionString = kn.strKoneksi();
+            koneksi.Open();
+            string str = "select w.nama as 'Nama Kepala Rumah Tangga', k.Jmlh_Total_Anggota_RT " +
                 "as 'Jumal Anggota Keluarga',k.Jmlh_KK as 'Jumlah Kepala Keluarga' " +
                 "from Kesling k join rumah r on k.id_rumah = k.id_rumah " +
                 "join warga w on r.id_rumah = w.id_rumah where " +
                 "w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga' and r.id_rumah = k.id_rumah" +
-                " and Nama Like '%" + tCari.Text + "%'";
-                SqlDataAdapter ad = new SqlDataAdapter(str, koneksi);
-                DataSet ds = new DataSet();
+                " and Nama Like @searchText";
+            SqlDataAdapter ad = new SqlDataAdapter(str, koneksi);
+            ad.SelectCommand.Parameters.AddWithValue("@searchText", tCari.Text + "%");
+            DataSet ds = new DataSet();
+            ad.Fill(ds);
+            if (string.IsNullOrEmpty(tCari.Text))
+            {
+                str = "select w.nama as 'Nama Kepala Rumah Tangga', k.Jmlh_Total_Anggota_RT " +
+                "as 'Jumal Anggota Keluarga',k.Jmlh_KK as 'Jumlah Kepala Keluarga' " +
+                "from Kesling k join rumah r on k.id_rumah = k.id_rumah " +
+                "join warga w on r.id_rumah = w.id_rumah where " +
+                "w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga' and r.id_rumah = k.id_rumah";
+                ad = new SqlDataAdapter(str, koneksi);
+                ds = new DataSet();
                 ad.Fill(ds);
+            }
+
+
+            if (ds.Tables[0].Rows.Count == 0)
+            {
+                if (!messageShown)
+                {
+                    MessageBox.Show("Data Tidak Ditemukan", "Warning");
+                    messageShown = true;
+                    str = "select w.nama as 'Nama Kepala Rumah Tangga', k.Jmlh_Total_Anggota_RT " +
+                "as 'Jumal Anggota Keluarga',k.Jmlh_KK as 'Jumlah Kepala Keluarga' " +
+                "from Kesling k join rumah r on k.id_rumah = k.id_rumah " +
+                "join warga w on r.id_rumah = w.id_rumah where " +
+                "w.status_dalam_rumah_tangga = 'Kepala Rumah Tangga' and r.id_rumah = k.id_rumah";
+                    ad = new SqlDataAdapter(str, koneksi);
+                    ds = new DataSet();
+                    ad.Fill(ds);
+                }
+            }
+            else
+            {
                 dataGridView1.DataSource = ds.Tables[0];
                 foreach (DataGridViewColumn col in dataGridView1.Columns)
                 {
                     col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     //col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
-                koneksi.Close();
+                messageShown = false; // Reset the flag when data is found
             }
-            else
-            {
-                dgv();
-            }
+
+            koneksi.Close();
         }
 
         private void searchicon_Click(object sender, EventArgs e)
@@ -747,6 +791,50 @@ namespace siDIA_Project
                 DataSet ds = new DataSet();
                 da.Fill(ds);
                 dataGridView1.DataSource = ds.Tables[0];
+            }
+        }
+
+        private void tBalita_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            // Check if the pressed key is a digit (0-9) or a control key (e.g., backspace)
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                // If it's not, prevent the character from being entered into the control
+                e.Handled = true;
+            }
+        }
+
+        private void tButa_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            // Check if the pressed key is a digit (0-9) or a control key (e.g., backspace)
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                // If it's not, prevent the character from being entered into the control
+                e.Handled = true;
+            }
+        }
+
+        private void tHamil_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            // Check if the pressed key is a digit (0-9) or a control key (e.g., backspace)
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                // If it's not, prevent the character from being entered into the control
+                e.Handled = true;
+            }
+        }
+
+        private void tBuSui_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            // Check if the pressed key is a digit (0-9) or a control key (e.g., backspace)
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                // If it's not, prevent the character from being entered into the control
+                e.Handled = true;
             }
         }
     }

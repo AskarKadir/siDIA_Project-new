@@ -564,6 +564,7 @@ namespace siDIA_Project
             dr.Close();
             jmlWarga.Text = hasil;
         }
+        // btn tutup tampilan
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -649,41 +650,52 @@ namespace siDIA_Project
             }
         }
 
-        //    tNIK.Text = nik;
-        //    tNoreg.Text = nreg;
-        //    tKK.Text = nKK;
-        //    tJKK.Text = sKK;
-        //    tJRT.Text = sRT;
-        //    tRT.Text = idRT;
-        //    tTempat.Text = tmpt;
-        //    dateTimePicker1.Value = tglL;
-        //    tJK.Text = JK;
-        //    tAgama.Text = agama;
-        //    tAlamat.Text = alamat;
-        //    tdidik.Text = didik;
-        //    tKerja.Text = kerja;
-        //    tKawin.Text = sKwin;
-        //    tBPJS.Text = "Tidak Aktif";
+        private bool messageShown;
+
         private void tCari_TextChanged(object sender, EventArgs e)
         {
             SqlConnection koneksi = new SqlConnection();
             koneksi.ConnectionString = kn.strKoneksi();
             koneksi.Open();
-            string str = "select NIK, Nama as 'Nama Warga', No_KK as 'No Kartu Keluarga', " +
-                "jenis_kelamin as 'Jenis Kelamin', tempat_lahir as 'Tempat Lahir', " +
-                "tanggal_lahir as 'Tgl/Bln/Th Lahir', Tgl_Kematian as 'Tanggal Meninggal', " +
-                "CONVERT(int, YEAR(Tgl_Kematian),105) - Convert(int, year(tanggal_lahir), 105) as " +
-                "'Usia saat Meninggal' from kematian where Nama Like '%" + tCari.Text + "%'";
+            string str = "select No_KK as 'No Kartu Keluarga', Nama as 'Nama Warga' from kematian where nama like @searchText";
             SqlDataAdapter ad = new SqlDataAdapter(str, koneksi);
+            ad.SelectCommand.Parameters.AddWithValue("@searchText", tCari.Text + "%");
             DataSet ds = new DataSet();
             ad.Fill(ds);
-            dataGridView1.DataSource = ds.Tables[0];
-            foreach (DataGridViewColumn col in dataGridView1.Columns)
+            if (string.IsNullOrEmpty(tCari.Text))
             {
-                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                //col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                str = "select No_KK as 'No Kartu Keluarga', Nama as 'Nama Warga' from kematian";
+                ad = new SqlDataAdapter(str, koneksi);
+                ds = new DataSet();
+                ad.Fill(ds);
             }
+
+
+            if (ds.Tables[0].Rows.Count == 0)
+            {
+                if (!messageShown)
+                {
+                    MessageBox.Show("Data Tidak Ditemukan", "Warning");
+                    messageShown = true;
+                    str = "select No_KK as 'No Kartu Keluarga', Nama as 'Nama Warga' from kematian";
+                    ad = new SqlDataAdapter(str, koneksi);
+                    ds = new DataSet();
+                    ad.Fill(ds);
+                }
+            }
+            else
+            {
+                dataGridView1.DataSource = ds.Tables[0];
+                foreach (DataGridViewColumn col in dataGridView1.Columns)
+                {
+                    col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    //col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
+                messageShown = false; // Reset the flag when data is found
+            }
+
             koneksi.Close();
+            //.Enabled = false;
         }
 
         static string GenerateRandomString(int length)

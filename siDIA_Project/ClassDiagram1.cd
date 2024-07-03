@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="siDIA_Project.CatatanKematian" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/wDBqABCACAQCBgCAACCAAwCAAgIgvCQCSAAAJIAiT4=</HashCode>
+      <FileName>CatatanKematian.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.CatatanWarga" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IABEKAACACAAABEAAACAAAQCAAKAAAAAAAAAAABEAAI=</HashCode>
+      <FileName>CatatanWarga.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.Data" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAISAABgAECAAoAACIAAAEAlkIAQIAhgAAABEAA=</HashCode>
+      <FileName>Data.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.DataKesling" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/wpAiRBgACEQChAEQADSAASCIQgIxGDABSgEAhIAGjo=</HashCode>
+      <FileName>DataKesling.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.DataWarga" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/wBAqEREAGAQiTgGQICTAYACABgBkOGQgDAOAKPICTQ=</HashCode>
+      <FileName>DataWarga.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.Grafik" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAKECAACABABAAIACAAASKAgAAAAAAAAAAAIBAAAA=</HashCode>
+      <FileName>Grafik.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.GrafikPreviewRpt" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAJAAAQAAAAAAAIAAAAAAAAAAAACAABAAAABAA=</HashCode>
+      <FileName>GrafikPreviewRpt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.CachedGrafikPreviewRpt" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAFAEAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GrafikPreviewRpt.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Right" Position="0.1" Collapsed="true" />
+  </Class>
+  <Class Name="siDIA_Project.home" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQSAAABAAAACAAABCCMA7AACAgPAPAQADAAA=</HashCode>
+      <FileName>home.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.Koneksi">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Koneksi.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.Login">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAABAAAACAAAACAAAYAAAAEGAAAAAAAAA=</HashCode>
+      <FileName>Login.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.Program">
+    <Position X="6" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.QReport" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>QReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.QReportJmlhL" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>QReportJmlhL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.QReportJmlhP" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>QReportJmlhP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.QReportKesling" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>QReportKesling.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.ReportCatatanWarga" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAJAAAQAAAAAAAIAAAAAAAAAAAACAABAAAABAA=</HashCode>
+      <FileName>ReportCatatanWarga.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.CachedReportCatatanWarga" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAFAEAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReportCatatanWarga.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="siDIA_Project.siDIA_Project1" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAACAAABEAAACAAAQCAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>siDIA_Project1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.splashscreen" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAACAAAACAAAAIAACAAQAAABAAAA=</HashCode>
+      <FileName>splashscreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.Properties.Resources" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="siDIA_Project.Properties.Settings" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
