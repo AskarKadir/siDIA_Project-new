@@ -456,11 +456,12 @@ namespace siDIA_Project
 
                     }
                     dr.Close();
-                    tRT.Text = nRT;
-                    tRT.Visible = true;
+                    //tRT.Text = nRT;
+                    tRT.Visible = false;
                     tRT.Enabled = false;
-                    cNoReg.Enabled = false;
-                    cNoReg.Visible = false;
+                    cNoReg.Text = nRT;
+                    cNoReg.Enabled = true;
+                    cNoReg.Visible = true;
                 }
             }
             else if (addstate == false && editstate == true)
@@ -480,7 +481,7 @@ namespace siDIA_Project
                     cNoReg.DataSource = ds.Tables[0];
                     cNoReg.Enabled = true;
                     cNoReg.Visible = true;
-                    tRT.Visible = false;
+                    tRT.Visible = true;
                 }
                 else
                 {
