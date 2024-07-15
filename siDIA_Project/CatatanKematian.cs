@@ -89,8 +89,8 @@ namespace siDIA_Project
                     cmd.ExecuteNonQuery();
 
                     string Istr = "insert into warga (no_reg,No_KK,NIK,Nama,status_dalam_keluarga,status_dalam_rumah_tangga, " +
-                        "jenis_kelamin,alamat,tempat_lahir,tanggal_lahir,agama,pendidikan,pekerjaan,status_perkawinan, " +
-                        "status_bpjs,id_rumah) values (@nreg,@nkk,@nik,@nma,@sk,@srt,@jk,@almt,@tl,@tgl,@ag,@pdk,@pkj," +
+                        "jenis_kelamin,tempat_lahir,tanggal_lahir,agama,pendidikan,pekerjaan,status_perkawinan, " +
+                        "status_bpjs,id_rumah) values (@nreg,@nkk,@nik,@nma,@sk,@srt,@jk,@tl,@tgl,@ag,@pdk,@pkj," +
                         "@sp,@sbpjs,@idR)";
                     SqlCommand cm = new SqlCommand(Istr, koneksi);
                     cm.CommandType = CommandType.Text;
@@ -102,7 +102,7 @@ namespace siDIA_Project
                     cm.Parameters.Add(new SqlParameter("sk", sKK));
                     cm.Parameters.Add(new SqlParameter("srt", sRT));
                     cm.Parameters.Add(new SqlParameter("jk", JK));
-                    cm.Parameters.Add(new SqlParameter("almt", alamat));
+                    //cm.Parameters.Add(new SqlParameter("almt", alamat));
                     cm.Parameters.Add(new SqlParameter("tl", tmpt));
                     cm.Parameters.Add(new SqlParameter("tgl", tglL));
                     cm.Parameters.Add(new SqlParameter("ag", agama));
@@ -383,7 +383,7 @@ namespace siDIA_Project
             if (addstate == false)
             {
                 SqlCommand cmd = new SqlCommand("select no_Reg, No_KK,NIK,status_dalam_keluarga," +
-                    "status_dalam_rumah_tangga, jenis_kelamin,alamat,tempat_lahir,tanggal_lahir,agama," +
+                    "status_dalam_rumah_tangga, jenis_kelamin,tempat_lahir,tanggal_lahir,agama," +
                     "pendidikan,pekerjaan,status_perkawinan,status_bpjs,id_rumah,Tgl_Kematian" +
                     " from kematian where nama = @Nm", koneksi);
                 cmd.CommandType = CommandType.Text;
@@ -401,7 +401,7 @@ namespace siDIA_Project
                     tglL = Convert.ToDateTime(dr["tanggal_lahir"].ToString());
                     JK = dr["jenis_kelamin"].ToString();
                     agama = dr["agama"].ToString();
-                    alamat = dr["alamat"].ToString();
+                    //alamat = dr["alamat"].ToString();
                     didik = dr["pendidikan"].ToString();
                     kerja = dr["pekerjaan"].ToString();
                     sKwin = dr["status_perkawinan"].ToString();
@@ -410,6 +410,18 @@ namespace siDIA_Project
 
                 }
                 dr.Close();
+
+                SqlCommand cmdRumah = new SqlCommand("select alamat from rumah where id_rumah = @idRumah", koneksi);
+                cmdRumah.CommandType = CommandType.Text;
+                cmdRumah.Parameters.Add(new SqlParameter("@idRumah", idRT));
+                SqlDataReader drRumah = cmdRumah.ExecuteReader();
+
+                if (drRumah.Read())
+                {
+                    alamat = drRumah["alamat"].ToString();
+                }
+                drRumah.Close();
+
                 koneksi.Close();
 
                 cNama.Text = nama;
@@ -436,7 +448,7 @@ namespace siDIA_Project
             else
             {
                 SqlCommand cmd = new SqlCommand("select no_Reg, No_KK,NIK,status_dalam_keluarga," +
-                    "status_dalam_rumah_tangga, jenis_kelamin,alamat,tempat_lahir,tanggal_lahir,agama," +
+                    "status_dalam_rumah_tangga, jenis_kelamin,tempat_lahir,tanggal_lahir,agama," +
                     "pendidikan,pekerjaan,status_perkawinan,status_bpjs,id_rumah" +
                     " from warga where nama = @Nm", koneksi);
                 cmd.CommandType = CommandType.Text;
@@ -454,7 +466,7 @@ namespace siDIA_Project
                     tglL = Convert.ToDateTime(dr["tanggal_lahir"].ToString());
                     JK = dr["jenis_kelamin"].ToString();
                     agama = dr["agama"].ToString();
-                    alamat = dr["alamat"].ToString();
+                    //alamat = dr["alamat"].ToString();
                     didik = dr["pendidikan"].ToString();
                     kerja = dr["pekerjaan"].ToString();
                     sKwin = dr["status_perkawinan"].ToString();
@@ -462,6 +474,18 @@ namespace siDIA_Project
 
                 }
                 dr.Close();
+
+                SqlCommand cmdRumah = new SqlCommand("select alamat from rumah where id_rumah = @idRumah", koneksi);
+                cmdRumah.CommandType = CommandType.Text;
+                cmdRumah.Parameters.Add(new SqlParameter("@idRumah", idRT));
+                SqlDataReader drRumah = cmdRumah.ExecuteReader();
+
+                if (drRumah.Read())
+                {
+                    alamat = drRumah["alamat"].ToString();
+                }
+                drRumah.Close();
+
                 koneksi.Close();
 
                 cNama.Text = nama;

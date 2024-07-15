@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Windows.Markup;
 
 namespace siDIA_Project
 {
@@ -403,6 +404,8 @@ namespace siDIA_Project
         {
             // Reset nilai cRT saat nilai cKK berubah
             cRT.SelectedIndex = -1; // Menyetel cRT ke state 'belum dipilih
+            cNoReg.SelectedIndex = -1;
+            tRT.Text = "";
         }
 
         private void cRT_TextChanged(object sender, EventArgs e)
@@ -456,12 +459,25 @@ namespace siDIA_Project
 
                     }
                     dr.Close();
-                    //tRT.Text = nRT;
-                    tRT.Visible = false;
+                    tRT.Text = nRT;
+                    tRT.Visible = true;
                     tRT.Enabled = false;
-                    cNoReg.Text = nRT;
-                    cNoReg.Enabled = true;
-                    cNoReg.Visible = true;
+                    //cNoReg.Text = nRT;
+                    cNoReg.Enabled = false;
+                    cNoReg.Visible = false;
+
+                    string idRumah = nRT;
+                    SqlCommand cmdAlamat = new SqlCommand("SELECT alamat FROM rumah WHERE id_rumah = @idRumah", koneksi);
+                    cmdAlamat.CommandType = CommandType.Text;
+                    cmdAlamat.Parameters.AddWithValue("@idRumah", nRT);
+                    SqlDataReader drAlamat = cmdAlamat.ExecuteReader();
+
+                    if (drAlamat.Read())
+                    {
+                        tAlamat.Text = drAlamat["alamat"].ToString();
+                        tAlamat.Enabled = false;
+                    }
+                    drAlamat.Close();
                 }
             }
             else if (addstate == false && editstate == true)
@@ -505,6 +521,18 @@ namespace siDIA_Project
                     tRT.Enabled = false;
                     cNoReg.Enabled = false;
                     cNoReg.Visible = false;
+                    string idRumah = nRT;
+                    SqlCommand cmdAlamat = new SqlCommand("SELECT alamat FROM rumah WHERE id_rumah = @idRumah", koneksi);
+                    cmdAlamat.CommandType = CommandType.Text;
+                    cmdAlamat.Parameters.AddWithValue("@idRumah", nRT);
+                    SqlDataReader drAlamat = cmdAlamat.ExecuteReader();
+
+                    if (drAlamat.Read())
+                    {
+                        tAlamat.Text = drAlamat["alamat"].ToString();
+                        tAlamat.Enabled = false;
+                    }
+                    drAlamat.Close();
                 }
             }
 
@@ -544,7 +572,16 @@ namespace siDIA_Project
         private void cAgama_TextChanged(object sender, EventArgs e)
         {
             if (addstate == true)
-                tAlamat.Enabled = true;
+            {
+                if (cJabatan.Text == "Kepala Keluarga")
+                { 
+                    tAlamat.Enabled = true;
+                }
+                else
+                {
+                    tAlamat.Enabled = false;
+                }
+            }    
         }
 
         private void tAlamat_TextChanged(object sender, EventArgs e)
@@ -651,378 +688,386 @@ namespace siDIA_Project
 
         private void btnSimpan_Click(object sender, EventArgs e)
         {
-                string str = "";
-                string str1 = "";
+            string str = "";
+            string str1 = "";
 
-                string noreg = Noreg.Text;
-                string nik = tNIK.Text;
-                string nama = tNama.Text;
-                string sKK = cJabatan.Text;
-                string nKK = tKK.Text;
-                string sRT = cRT.Text;
-                string idRT = tRT.Text;
-                string tmpt = tTempat.Text;
-                DateTime tglL = dateTimePicker1.Value.Date;
-                string JK = cJK.Text;
-                string agama = cAgama.Text;
-                string alamat = tAlamat.Text;
-                string didik = cPendidikan.Text;
-                string kerja = cPekerjaan.Text;
-                string krjLn = tPLain.Text;
-                string sKwin = tStatusKawin.Text;
-                string sBPJS = tStatusBPJS.Text;
-                DialogResult dg;
-            if (editstate == true && addstate == false)
+            string noreg = Noreg.Text;
+            string nik = tNIK.Text;
+            string nama = tNama.Text;
+            string sKK = cJabatan.Text;
+            string nKK = tKK.Text;
+            string sRT = cRT.Text;
+            string idRT = tRT.Text;
+            string tmpt = tTempat.Text;
+            DateTime tglL = dateTimePicker1.Value.Date;
+            string JK = cJK.Text;
+            string agama = cAgama.Text;
+            string alamat = tAlamat.Text;
+            string didik = cPendidikan.Text;
+            string kerja = cPekerjaan.Text;
+            string krjLn = tPLain.Text;
+            string sKwin = tStatusKawin.Text;
+            string sBPJS = tStatusBPJS.Text;
+            DialogResult dg;
+            try
             {
-
-                dg = MessageBox.Show("Apakah anda ingin mengubah data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (dg == DialogResult.Yes)
+                if (editstate == true && addstate == false)
                 {
-                    SqlConnection koneksi = new SqlConnection();
-                    koneksi.ConnectionString = kn.strKoneksi();
-                    koneksi.Open();
-                    str = "update warga set No_KK = @nkk,NIK = @nik,Nama = @nma,status_dalam_keluarga = @sk," +
-                        "status_dalam_rumah_tangga = @srt,jenis_kelamin = @jk,alamat = @almt,tempat_lahir = @tl," +
-                        "tanggal_lahir = @tgl,agama = @ag,pendidikan = @pdk,pekerjaan = @pkj,status_perkawinan = @sp,"
-                        + "status_bpjs = @sbpjs,id_rumah = @idR where no_reg = @nreg";
-                    SqlCommand cmd = new SqlCommand(str, koneksi);
-                    cmd.CommandType = CommandType.Text;
 
-                    if (cJabatan.Text.Equals("Kepala Keluarga") && cRT.Text.Equals("Kepala Rumah Tangga"))
+                    dg = MessageBox.Show("Apakah anda ingin mengubah data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dg == DialogResult.Yes)
                     {
-                        string nRT = "";
-                        SqlCommand cm = new SqlCommand("select id_rumah from warga where no_reg = @nReg", koneksi);
-                        cm.CommandType = CommandType.Text;
-                        cm.Parameters.Add(new SqlParameter("@nReg", noreg));
-                        SqlDataReader dr = cm.ExecuteReader();
-                        while (dr.Read())
+                        SqlConnection koneksi = new SqlConnection();
+                        koneksi.ConnectionString = kn.strKoneksi();
+                        koneksi.Open();
+                        str = "update warga set No_KK = @nkk,NIK = @nik,Nama = @nma,status_dalam_keluarga = @sk," +
+                            "status_dalam_rumah_tangga = @srt,jenis_kelamin = @jk,tempat_lahir = @tl," +
+                            "tanggal_lahir = @tgl,agama = @ag,pendidikan = @pdk,pekerjaan = @pkj,status_perkawinan = @sp,"
+                            + "status_bpjs = @sbpjs,id_rumah = @idR where no_reg = @nreg";
+                        SqlCommand cmd = new SqlCommand(str, koneksi);
+                        cmd.CommandType = CommandType.Text;
+
+                        if (cJabatan.Text.Equals("Kepala Keluarga") && cRT.Text.Equals("Kepala Rumah Tangga"))
                         {
-                            nRT = dr["id_rumah"].ToString();
+                            string nRT = "";
+                            SqlCommand cm = new SqlCommand("select id_rumah from warga where no_reg = @nReg", koneksi);
+                            cm.CommandType = CommandType.Text;
+                            cm.Parameters.Add(new SqlParameter("@nReg", noreg));
+                            SqlDataReader dr = cm.ExecuteReader();
+                            while (dr.Read())
+                            {
+                                nRT = dr["id_rumah"].ToString();
+
+                            }
+                            dr.Close();
+                            if (!nRT.Equals(idRT))
+                            {
+                                str1 = "insert into rumah (id_rumah) values (@idRmh)";
+                                SqlCommand cRmh = new SqlCommand(str1, koneksi);
+                                cRmh.CommandType = CommandType.Text;
+                                cRmh.Parameters.Add(new SqlParameter("idRmh", idRT));
+                                cRmh.ExecuteNonQuery();
+                            }
+                            if (!kerja.Equals("Lainnya"))
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", nKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                // cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", kerja));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            }
+                            else
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", nKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                // cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            }
+
 
                         }
-                        dr.Close();
-                        if (!nRT.Equals(idRT))
+                        else if (cJabatan.Text.Equals("Kepala Keluarga"))
                         {
-                            str1 = "insert into rumah (id_rumah) values (@idRmh)";
+                            string idaRT = cNoReg.SelectedValue.ToString();
+                            if (!kerja.Equals("Lainnya"))
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", nKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                // cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", kerja));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idaRT));
+                            }
+                            else
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", nKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                // cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idaRT));
+                            }
+                        }
+                        else
+                        {
+                            string naKK = cKK.SelectedValue.ToString();
+                            if (!kerja.Equals("Lainnya"))
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", naKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                // cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", kerja));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            }
+                            else
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", naKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                // cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            }
+                        }
+                        cmd.ExecuteNonQuery();
+
+                        try
+                        {
+
+                            // Menyimpan data alamat ke tabel rumah
+                            string insertRumah = "update rumah set alamat = @almtt where id_rumah = @rumah";
+                            using (SqlCommand cmdRumah = new SqlCommand(insertRumah , koneksi))
+                            {
+                                cmdRumah.CommandType = CommandType.Text;
+
+                                // Tambahkan parameter yang sesuai dengan nilai yang ingin Anda perbarui
+                                cmdRumah.Parameters.AddWithValue("@almtt", alamat);
+                                cmdRumah.Parameters.AddWithValue("@rumah", idRT);
+
+                                cmdRumah.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+
+                        koneksi.Close();
+                        MessageBox.Show("Data Berhasil Diperbaruhi", "Sukses", MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                        clearForm();
+                        dgv();
+                        editstate = false;
+                    }
+                }
+                else if (addstate == true && editstate == false)
+                {
+                    dg = MessageBox.Show("Apakah data yang anda masukan sudah sesuai?", "Konfirmasi Tambah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (dg == DialogResult.Yes)
+                    {
+                        SqlConnection koneksi = new SqlConnection();
+                        koneksi.ConnectionString = kn.strKoneksi();
+                        koneksi.Open();
+                        str = "insert into warga (no_reg,No_KK,NIK,Nama,status_dalam_keluarga,status_dalam_rumah_tangga, " +
+                            "jenis_kelamin,tempat_lahir,tanggal_lahir,agama,pendidikan,pekerjaan,status_perkawinan, " +
+                            "status_bpjs,id_rumah) values (@nreg,@nkk,@nik,@nma,@sk,@srt,@jk,@tl,@tgl,@ag,@pdk,@pkj," +
+                            "@sp,@sbpjs,@idR)";
+                        SqlCommand cmd = new SqlCommand(str, koneksi);
+                        cmd.CommandType = CommandType.Text;
+
+                        if (cJabatan.Text.Equals("Kepala Keluarga") && cRT.Text.Equals("Kepala Rumah Tangga"))
+                        {
+                            str1 = "insert into rumah (id_rumah,alamat) values (@idRmh,@almt)";
                             SqlCommand cRmh = new SqlCommand(str1, koneksi);
                             cRmh.CommandType = CommandType.Text;
                             cRmh.Parameters.Add(new SqlParameter("idRmh", idRT));
+                            cRmh.Parameters.Add(new SqlParameter("almt", alamat));
                             cRmh.ExecuteNonQuery();
+                            if (!kerja.Equals("Lainnya"))
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", nKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                //cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", kerja));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            }
+                            else
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", nKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                //cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            }
+
+
                         }
-                        if (!kerja.Equals("Lainnya"))
+                        else if (cJabatan.Text.Equals("Kepala Keluarga"))
                         {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", kerja));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            string idaRT = cNoReg.SelectedValue.ToString();
+                            if (!kerja.Equals("Lainnya"))
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", nKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                //cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", kerja));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idaRT));
+                            }
+                            else
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", nKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                //cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idaRT));
+                            }
                         }
                         else
                         {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            string naKK = cKK.SelectedValue.ToString();
+                            if (!kerja.Equals("Lainnya"))
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", naKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                //cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", kerja));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            }
+                            else
+                            {
+                                cmd.Parameters.Add(new SqlParameter("nreg", noreg));
+                                cmd.Parameters.Add(new SqlParameter("nkk", naKK));
+                                cmd.Parameters.Add(new SqlParameter("nik", nik));
+                                cmd.Parameters.Add(new SqlParameter("nma", nama));
+                                cmd.Parameters.Add(new SqlParameter("sk", sKK));
+                                cmd.Parameters.Add(new SqlParameter("srt", sRT));
+                                cmd.Parameters.Add(new SqlParameter("jk", JK));
+                                //cmd.Parameters.Add(new SqlParameter("almt", alamat));
+                                cmd.Parameters.Add(new SqlParameter("tl", tmpt));
+                                cmd.Parameters.Add(new SqlParameter("tgl", tglL));
+                                cmd.Parameters.Add(new SqlParameter("ag", agama));
+                                cmd.Parameters.Add(new SqlParameter("pdk", didik));
+                                cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
+                                cmd.Parameters.Add(new SqlParameter("sp", sKwin));
+                                cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
+                                cmd.Parameters.Add(new SqlParameter("idR", idRT));
+                            }
                         }
-
-
+                        cmd.ExecuteNonQuery();
+                        koneksi.Close();
+                        MessageBox.Show("Data Berhasil DiTambahkan", "Sukses", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                        clearForm();
+                        dgv();
+                        jmlWrg();
+                        addstate = false;
                     }
-                    else if (cJabatan.Text.Equals("Kepala Keluarga"))
-                    {
-                        string idaRT = cNoReg.SelectedValue.ToString();
-                        if (!kerja.Equals("Lainnya"))
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", kerja));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idaRT));
-                        }
-                        else
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idaRT));
-                        }
-                    }
-                    else
-                    {
-                        string naKK = cKK.SelectedValue.ToString();
-                        if (!kerja.Equals("Lainnya"))
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", naKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", kerja));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
-                        }
-                        else
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", naKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
-                        }
-                    }
-                    cmd.ExecuteNonQuery();
-                    koneksi.Close();
-                    MessageBox.Show("Data Berhasil Diperbaruhi", "Sukses", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                    clearForm();
-                    dgv();
-                    editstate = false;
-                }
-                }
-            else if (addstate == true && editstate == false)
-            {
-                //string str = "";
-                //string str1 = "";
-
-                //string noreg = Noreg.Text;
-                //string nik = tNIK.Text;
-                //string nama = tNama.Text;
-                //string sKK = cJabatan.Text;
-                //string nKK = tKK.Text;
-                //string sRT = cRT.Text;
-                //string idRT = tRT.Text;
-                //string tmpt = tTempat.Text;
-                //DateTime tglL = dateTimePicker1.Value.Date;
-                //string JK = cJK.Text;
-                //string agama = cAgama.Text;
-                //string alamat = tAlamat.Text;
-                //string didik = cPendidikan.Text;
-                //string kerja = cPekerjaan.Text;
-                //string krjLn = tPLain.Text;
-                //string sKwin = tStatusKawin.Text;
-                //string sBPJS = tStatusBPJS.Text;
-                //DialogResult dg;
-                dg = MessageBox.Show("Apakah data yang anda masukan sudah sesuai?", "Konfirmasi Tambah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (dg == DialogResult.Yes)
-                {
-                    SqlConnection koneksi = new SqlConnection();
-                    koneksi.ConnectionString = kn.strKoneksi();
-                    koneksi.Open();
-                    str = "insert into warga (no_reg,No_KK,NIK,Nama,status_dalam_keluarga,status_dalam_rumah_tangga, " +
-                        "jenis_kelamin,alamat,tempat_lahir,tanggal_lahir,agama,pendidikan,pekerjaan,status_perkawinan, " +
-                        "status_bpjs,id_rumah) values (@nreg,@nkk,@nik,@nma,@sk,@srt,@jk,@almt,@tl,@tgl,@ag,@pdk,@pkj," +
-                        "@sp,@sbpjs,@idR)";
-                    SqlCommand cmd = new SqlCommand(str, koneksi);
-                    cmd.CommandType = CommandType.Text;
-
-                    if (cJabatan.Text.Equals("Kepala Keluarga") && cRT.Text.Equals("Kepala Rumah Tangga"))
-                    {
-                        str1 = "insert into rumah (id_rumah) values (@idRmh)";
-                        SqlCommand cRmh = new SqlCommand(str1, koneksi);
-                        cRmh.CommandType = CommandType.Text;
-                        cRmh.Parameters.Add(new SqlParameter("idRmh", idRT));
-                        cRmh.ExecuteNonQuery();
-                        if (!kerja.Equals("Lainnya"))
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", kerja));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
-                        }
-                        else
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
-                        }
-
-
-                    }
-                    else if (cJabatan.Text.Equals("Kepala Keluarga"))
-                    {
-                        string idaRT = cNoReg.SelectedValue.ToString();
-                        if (!kerja.Equals("Lainnya"))
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", kerja));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idaRT));
-                        }
-                        else
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idaRT));
-                        }
-                    }
-                    else
-                    {
-                        string naKK = cKK.SelectedValue.ToString();
-                        if (!kerja.Equals("Lainnya"))
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", naKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", kerja));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
-                        }
-                        else
-                        {
-                            cmd.Parameters.Add(new SqlParameter("nreg", noreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", naKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tgl", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", krjLn));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", sBPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
-                        }
-                    }
-                    cmd.ExecuteNonQuery();
-                    koneksi.Close();
-                    MessageBox.Show("Data Berhasil DiTambahkan", "Sukses", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                    clearForm();
-                    dgv();
-                    jmlWrg();
-                    addstate = false;
                 }
             }
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error Keleluruhan: " + ex.Message);
+            }
         }
 
         //edit button 
@@ -1141,7 +1186,7 @@ namespace siDIA_Project
             koneksi.ConnectionString = kn.strKoneksi();
             koneksi.Open();
             SqlCommand cmd = new SqlCommand("select no_reg,No_KK,NIK,Nama,status_dalam_keluarga,status_dalam_rumah_tangga, " +
-                "jenis_kelamin,alamat,tempat_lahir,tanggal_lahir,agama,pendidikan,pekerjaan,status_perkawinan, " +
+                "jenis_kelamin,tempat_lahir,tanggal_lahir,agama,pendidikan,pekerjaan,status_perkawinan, " +
                 "status_bpjs,id_rumah from warga where no_kk = @nokk and Nama = @nm", koneksi);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add(new SqlParameter("@nokk", nokk));
@@ -1160,7 +1205,6 @@ namespace siDIA_Project
                 tglL = dr["tanggal_lahir"].ToString();
                 JK = dr["jenis_kelamin"].ToString();
                 agama = dr["agama"].ToString();
-                alamat = dr["alamat"].ToString();
                 didik = dr["pendidikan"].ToString();
                 kerja = dr["pekerjaan"].ToString();
                 sKwin = dr["status_perkawinan"].ToString();
@@ -1168,25 +1212,21 @@ namespace siDIA_Project
 
             }
             dr.Close();
+            if (!string.IsNullOrEmpty(idRT))
+            {
+                SqlCommand cmdRumah = new SqlCommand("select alamat from rumah where id_rumah = @idRumah", koneksi);
+                cmdRumah.CommandType = CommandType.Text;
+                cmdRumah.Parameters.Add(new SqlParameter("@idRumah", idRT));
+                SqlDataReader drRumah = cmdRumah.ExecuteReader();
 
-            Console.WriteLine(noreg + "bla blas noreg out before if else");
-            Console.WriteLine(nik + "bla blas nik out before if else"); 
-            Console.WriteLine(nama + "bla blas nama out before if else");
-            Console.WriteLine(sKK + "bla blas sKK out before if else"); 
-            Console.WriteLine(nKK + "bla blas nKK out before if else");
-            Console.WriteLine(sRT + "bla blas sRT out before if else"); 
-            Console.WriteLine(idRT + "bla blas idrt out before if else");
-            Console.WriteLine(tmpt + "bla blas tmpt out before if else");
-            Console.WriteLine(tglL + "bla blas tglL out before if else");
-            Console.WriteLine(JK + "bla blas JK out before if else"); 
-            Console.WriteLine(agama + "bla blas agama out before if else");
-            Console.WriteLine(alamat + "bla blas alamat out before if else"); 
-            Console.WriteLine(didik + "bla blas didik out before if else");
-            Console.WriteLine(kerja + "bla blas kerja out before if else");
-            Console.WriteLine(sKwin + "bla blas sKwin out before if else"); 
-            Console.WriteLine(sKwin + "bla blas sKwin out before if else");
-            Console.WriteLine(tRT.Text + "bla blas Text RT out before if else");
-            Console.WriteLine(cNoReg.Text + "bla blas Combo RT out before if else");
+                if (drRumah.Read())
+                {
+                    alamat = drRumah["alamat"].ToString();
+                }
+                drRumah.Close();
+            }
+
+            koneksi.Close();
 
             if (sKK.Equals("Kepala Keluarga") && sRT.Equals("Kepala Rumah Tangga"))
             {
