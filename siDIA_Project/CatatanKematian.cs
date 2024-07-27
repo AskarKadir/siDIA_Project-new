@@ -27,6 +27,7 @@ namespace siDIA_Project
         private void btnAdd_Click(object sender, EventArgs e)
         {
             clearForm();
+            dtMati.MaxDate = DateTime.Now;
             addstate = true;
             SqlConnection koneksi = new SqlConnection();
             koneksi.ConnectionString = kn.strKoneksi();
@@ -139,6 +140,7 @@ namespace siDIA_Project
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            messageShown = false;
             jmlWrgM();
             dgv();
             defaultbuttonstate();
@@ -539,7 +541,7 @@ namespace siDIA_Project
             tKawin.Enabled = false;
             tBPJS.Enabled = false;
             dtMati.Enabled = false;
-            dtMati.Value = DateTime.Now;
+            dtMati.Value = dtMati.MaxDate;
 
             btnAdd.Visible = true;
             btnAdd.Enabled = true;

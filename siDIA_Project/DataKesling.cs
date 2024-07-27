@@ -16,6 +16,7 @@ namespace siDIA_Project
     {
 
         bool addstate = false;
+        bool editstate = false;
 
         Koneksi kn = new Koneksi();
         public DataKesling()
@@ -23,6 +24,7 @@ namespace siDIA_Project
             InitializeComponent();
             dgv();
             clearForm();
+            searchicon.Enabled = false;
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
@@ -122,6 +124,7 @@ namespace siDIA_Project
         {
             clearForm();
             addstate = false;
+            editstate = false;
             textBoxCariNama.Visible = false;
             textBoxCariNama.Enabled = false;
             cNmRT.Visible = true;
@@ -257,154 +260,290 @@ namespace siDIA_Project
 
         private void tWUS_TextChanged(object sender, EventArgs e)
         {
-            tButa.Enabled = true;
+            if (addstate == true)
+            {
+                tButa.Enabled = true;
+            }
         }
 
         private void tButa_TextChanged(object sender, EventArgs e)
         {
-            tHamil.Enabled = true;
+            if (addstate == true)
+            {
+                tHamil.Enabled = true;
+            }
         }
 
         private void tHamil_TextChanged(object sender, EventArgs e)
         {
-            tBuSui.Enabled = true;
+            if (addstate == true)
+            {
+                tBuSui.Enabled = true;
+            }
         }
 
         private void tBuSui_TextChanged(object sender, EventArgs e)
         {
-            cJamban.Enabled = true;
+            if (addstate == true)
+            {
+                cJamban.Enabled = true;
+            }
         }
 
         private void cJamban_TextChanged(object sender, EventArgs e)
         {
-            cAir.Enabled = true;
+            if (addstate == true)
+            {
+                cAir.Enabled = true;
+            }
         }
 
         private void cAir_TextChanged(object sender, EventArgs e)
         {
-            if (cAir.Text.Equals("Lainnya"))
+            if (addstate == true)
             {
-                tAir.Enabled = true;
-                tAir.Visible = true;
+                if (cAir.Text.Equals("Lainnya"))
+                {
+                    tAir.Enabled = true;
+                    tAir.Visible = true;
+                }
+                else
+                {
+                    cSampah.Enabled = true;
+                }
             }
-            else
+            else if (editstate == true)
             {
-                cSampah.Enabled = true;
+                if (cAir.Text.Equals("Lainnya"))
+                {
+                    tAir.Enabled = true;
+                    tAir.Visible = true;
+                }
+                else
+                {
+                    tAir.Enabled = false;
+                    tAir.Visible = false;
+                }
             }
         }
 
         private void tAir_TextChanged(object sender, EventArgs e)
         {
-            cSampah.Enabled = true;
+            if (addstate == true)
+            {
+                cSampah.Enabled = true;
+            }
         }
 
         private void cSampah_TextChanged(object sender, EventArgs e)
         {
-            cLimbah.Enabled = true;
+            if (addstate == true)
+            {
+                cLimbah.Enabled = true;
+            }
         }
 
         private void cLimbah_TextChanged(object sender, EventArgs e)
         {
-            cP4K.Enabled = true;
+            if (addstate == true)
+            {
+                cP4K.Enabled = true;
+            }
         }
 
         private void cP4K_TextChanged(object sender, EventArgs e)
         {
-            cKRmh.Enabled = true;
+            if (addstate == true)
+            {
+                cKRmh.Enabled = true;
+            }
         }
 
         private void btnSimpan_Click(object sender, EventArgs e)
         {
-            addstate = false;
-            try
+            if (addstate == true)
             {
-                string nRmh = tRmh.Text;
-                int jmlhA = int.Parse(tjART.Text);
-                int jmlhK = int.Parse(tJKK.Text);
-                int jBalita = int.Parse(tBalita.Text);
-                int jPUS = int.Parse(tPUS.Text);
-                int jWUS = int.Parse(tWUS.Text);
-                int jButa = int.Parse(tButa.Text);
-                int jHamil = int.Parse(tHamil.Text);
-                int jBuSui = int.Parse(tBuSui.Text);
-                int jLansia = int.Parse(tLansia.Text);
-                string jamban = cJamban.Text;
-                string air = cAir.Text;
-                string Lair = tAir.Text;
-                string sampah = cSampah.Text;
-                string limbah = cLimbah.Text;
-                string P4K = cP4K.Text;
-                string kRmh = cKRmh.Text;
-
-
-            DialogResult dg;
-            dg = MessageBox.Show("Apakah data yang anda masukan sudah sesuai?", "Konfirmasi Tambah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (dg == DialogResult.Yes)
-            {
-                string str = "";
-                SqlConnection koneksi = new SqlConnection();
-                koneksi.ConnectionString = kn.strKoneksi();
-                koneksi.Open();
-                str = "insert into kesling (Jmlh_Total_Anggota_RT,Jmlh_KK,Balita,PUS,WUS,Buta,Ibu_Hamil," +
-                    "Ibu_Menyusui,Lansia,Mempunyai_Jamban,Mempunyai_Sumber_Air,Mempunyai_Tmpt_Sampah," +
-                    "Mempunyai_Saluran_Limbah,Stiker_P4K,KriteriaRumah,id_rumah) " +
-                    "values (@jART,@jKK,@jB,@jP,@jW,@jBta,@jH,@jS,@jL,@jbn,@air,@smph,@lmbh,@p4k,@kR,@idR)";
-                SqlCommand cmd = new SqlCommand(str, koneksi);
-                cmd.CommandType = CommandType.Text;
-
-                if (!air.Equals("Lainnya"))
+                try
                 {
-                    cmd.Parameters.Add(new SqlParameter("jART", jmlhA));
-                    cmd.Parameters.Add(new SqlParameter("jKK", jmlhK));
-                    cmd.Parameters.Add(new SqlParameter("jB", jBalita));
-                    cmd.Parameters.Add(new SqlParameter("jBta", jButa));
-                    cmd.Parameters.Add(new SqlParameter("jP", jPUS));
-                    cmd.Parameters.Add(new SqlParameter("jW", jWUS));
-                    cmd.Parameters.Add(new SqlParameter("jH", jHamil));
-                    cmd.Parameters.Add(new SqlParameter("jS", jBuSui));
-                    cmd.Parameters.Add(new SqlParameter("jL", jLansia));
-                    cmd.Parameters.Add(new SqlParameter("jbn", jamban));
-                    cmd.Parameters.Add(new SqlParameter("air", air));
-                    cmd.Parameters.Add(new SqlParameter("smph", sampah));
-                    cmd.Parameters.Add(new SqlParameter("lmbh", limbah));
-                    cmd.Parameters.Add(new SqlParameter("p4k", P4K));
-                    cmd.Parameters.Add(new SqlParameter("kR", kRmh));
-                    cmd.Parameters.Add(new SqlParameter("idR", nRmh));
-                }
-                else
-                {
-                    cmd.Parameters.Add(new SqlParameter("jART", jmlhA));
-                    cmd.Parameters.Add(new SqlParameter("jKK", jmlhK));
-                    cmd.Parameters.Add(new SqlParameter("jB", jBalita));
-                    cmd.Parameters.Add(new SqlParameter("jBta", jButa));
-                    cmd.Parameters.Add(new SqlParameter("jP", jPUS));
-                    cmd.Parameters.Add(new SqlParameter("jW", jWUS));
-                    cmd.Parameters.Add(new SqlParameter("jH", jHamil));
-                    cmd.Parameters.Add(new SqlParameter("jS", jBuSui));
-                    cmd.Parameters.Add(new SqlParameter("jL", jLansia));
-                    cmd.Parameters.Add(new SqlParameter("jbn", jamban));
-                    cmd.Parameters.Add(new SqlParameter("air", Lair));
-                    cmd.Parameters.Add(new SqlParameter("smph", sampah));
-                    cmd.Parameters.Add(new SqlParameter("lmbh", limbah));
-                    cmd.Parameters.Add(new SqlParameter("p4k", P4K));
-                    cmd.Parameters.Add(new SqlParameter("kR", kRmh));
-                    cmd.Parameters.Add(new SqlParameter("idR", nRmh));
-                }
-                    cmd.ExecuteNonQuery();
-                    koneksi.Close();
-                    MessageBox.Show("Data Berhasil DiTambahkan", "Sukses", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                    clearForm();
-                    dgv();
+                    string nRmh = tRmh.Text;
+                    int jmlhA = int.Parse(tjART.Text);
+                    int jmlhK = int.Parse(tJKK.Text);
+                    int jBalita = int.Parse(tBalita.Text);
+                    int jPUS = int.Parse(tPUS.Text);
+                    int jWUS = int.Parse(tWUS.Text);
+                    int jButa = int.Parse(tButa.Text);
+                    int jHamil = int.Parse(tHamil.Text);
+                    int jBuSui = int.Parse(tBuSui.Text);
+                    int jLansia = int.Parse(tLansia.Text);
+                    string jamban = cJamban.Text;
+                    string air = cAir.Text;
+                    string Lair = tAir.Text;
+                    string sampah = cSampah.Text;
+                    string limbah = cLimbah.Text;
+                    string P4K = cP4K.Text;
+                    string kRmh = cKRmh.Text;
 
+
+                    DialogResult dg;
+                    dg = MessageBox.Show("Apakah data yang anda masukan sudah sesuai?", "Konfirmasi Tambah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (dg == DialogResult.Yes)
+                    {
+                        string str = "";
+                        SqlConnection koneksi = new SqlConnection();
+                        koneksi.ConnectionString = kn.strKoneksi();
+                        koneksi.Open();
+                        str = "insert into kesling (Jmlh_Total_Anggota_RT,Jmlh_KK,Balita,PUS,WUS,Buta,Ibu_Hamil," +
+                            "Ibu_Menyusui,Lansia,Mempunyai_Jamban,Mempunyai_Sumber_Air,Mempunyai_Tmpt_Sampah," +
+                            "Mempunyai_Saluran_Limbah,Stiker_P4K,KriteriaRumah,id_rumah) " +
+                            "values (@jART,@jKK,@jB,@jP,@jW,@jBta,@jH,@jS,@jL,@jbn,@air,@smph,@lmbh,@p4k,@kR,@idR)";
+                        SqlCommand cmd = new SqlCommand(str, koneksi);
+                        cmd.CommandType = CommandType.Text;
+
+                        if (!air.Equals("Lainnya"))
+                        {
+                            cmd.Parameters.Add(new SqlParameter("jART", jmlhA));
+                            cmd.Parameters.Add(new SqlParameter("jKK", jmlhK));
+                            cmd.Parameters.Add(new SqlParameter("jB", jBalita));
+                            cmd.Parameters.Add(new SqlParameter("jBta", jButa));
+                            cmd.Parameters.Add(new SqlParameter("jP", jPUS));
+                            cmd.Parameters.Add(new SqlParameter("jW", jWUS));
+                            cmd.Parameters.Add(new SqlParameter("jH", jHamil));
+                            cmd.Parameters.Add(new SqlParameter("jS", jBuSui));
+                            cmd.Parameters.Add(new SqlParameter("jL", jLansia));
+                            cmd.Parameters.Add(new SqlParameter("jbn", jamban));
+                            cmd.Parameters.Add(new SqlParameter("air", air));
+                            cmd.Parameters.Add(new SqlParameter("smph", sampah));
+                            cmd.Parameters.Add(new SqlParameter("lmbh", limbah));
+                            cmd.Parameters.Add(new SqlParameter("p4k", P4K));
+                            cmd.Parameters.Add(new SqlParameter("kR", kRmh));
+                            cmd.Parameters.Add(new SqlParameter("idR", nRmh));
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(new SqlParameter("jART", jmlhA));
+                            cmd.Parameters.Add(new SqlParameter("jKK", jmlhK));
+                            cmd.Parameters.Add(new SqlParameter("jB", jBalita));
+                            cmd.Parameters.Add(new SqlParameter("jBta", jButa));
+                            cmd.Parameters.Add(new SqlParameter("jP", jPUS));
+                            cmd.Parameters.Add(new SqlParameter("jW", jWUS));
+                            cmd.Parameters.Add(new SqlParameter("jH", jHamil));
+                            cmd.Parameters.Add(new SqlParameter("jS", jBuSui));
+                            cmd.Parameters.Add(new SqlParameter("jL", jLansia));
+                            cmd.Parameters.Add(new SqlParameter("jbn", jamban));
+                            cmd.Parameters.Add(new SqlParameter("air", Lair));
+                            cmd.Parameters.Add(new SqlParameter("smph", sampah));
+                            cmd.Parameters.Add(new SqlParameter("lmbh", limbah));
+                            cmd.Parameters.Add(new SqlParameter("p4k", P4K));
+                            cmd.Parameters.Add(new SqlParameter("kR", kRmh));
+                            cmd.Parameters.Add(new SqlParameter("idR", nRmh));
+                        }
+                        cmd.ExecuteNonQuery();
+                        koneksi.Close();
+                        MessageBox.Show("Data Berhasil DiTambahkan", "Sukses", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                        clearForm();
+                        dgv();
+                        addstate = false;
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Kesalahan Data");
                 }
             }
-            catch
+            else if (editstate == true)
             {
-                MessageBox.Show("Kesalahan Data");
-            }
+                try
+                {
+                    string nRmh = tRmh.Text;
+                    int jmlhA = int.Parse(tjART.Text);
+                    int jmlhK = int.Parse(tJKK.Text);
+                    int jBalita = int.Parse(tBalita.Text);
+                    int jPUS = int.Parse(tPUS.Text);
+                    int jWUS = int.Parse(tWUS.Text);
+                    int jButa = int.Parse(tButa.Text);
+                    int jHamil = int.Parse(tHamil.Text);
+                    int jBuSui = int.Parse(tBuSui.Text);
+                    int jLansia = int.Parse(tLansia.Text);
+                    string jamban = cJamban.Text;
+                    string air = cAir.Text;
+                    string Lair = tAir.Text;
+                    string sampah = cSampah.Text;
+                    string limbah = cLimbah.Text;
+                    string P4K = cP4K.Text;
+                    string kRmh = cKRmh.Text;
 
+                    DialogResult dg;
+                    dg = MessageBox.Show("Apakah anda ingin mengubah data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (dg == DialogResult.Yes)
+                    {
+                        string str = "";
+
+                        SqlConnection koneksi = new SqlConnection();
+                        koneksi.ConnectionString = kn.strKoneksi();
+                        koneksi.Open();
+                        str = "update kesling set Jmlh_Total_Anggota_RT = @jART,Jmlh_KK = @jKK,Balita = @jB," +
+                            "PUS = @jP,WUS = @jW,Buta = @jBta,Ibu_Hamil = @jH,Ibu_Menyusui = @jS,Lansia = @jL," +
+                            "Mempunyai_Jamban = @jbn,Mempunyai_Sumber_Air = @air,Mempunyai_Tmpt_Sampah = @smph," +
+                            "Mempunyai_Saluran_Limbah = @lmbh,Stiker_P4K = @p4k,KriteriaRumah = @kR " +
+                            "where id_rumah = @idR";
+                        SqlCommand cmd = new SqlCommand(str, koneksi);
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.Add(new SqlParameter("@idR", nRmh));
+
+                        if (!air.Equals("Lainnya"))
+                        {
+                            cmd.Parameters.Add(new SqlParameter("jART", jmlhA));
+                            cmd.Parameters.Add(new SqlParameter("jKK", jmlhK));
+                            cmd.Parameters.Add(new SqlParameter("jB", jBalita));
+                            cmd.Parameters.Add(new SqlParameter("jP", jPUS));
+                            cmd.Parameters.Add(new SqlParameter("jW", jWUS));
+                            cmd.Parameters.Add(new SqlParameter("jBta", jButa));
+                            cmd.Parameters.Add(new SqlParameter("jH", jHamil));
+                            cmd.Parameters.Add(new SqlParameter("jS", jBuSui));
+                            cmd.Parameters.Add(new SqlParameter("jL", jLansia));
+                            cmd.Parameters.Add(new SqlParameter("jbn", jamban));
+                            cmd.Parameters.Add(new SqlParameter("air", air));
+                            cmd.Parameters.Add(new SqlParameter("smph", sampah));
+                            cmd.Parameters.Add(new SqlParameter("lmbh", limbah));
+                            cmd.Parameters.Add(new SqlParameter("p4k", P4K));
+                            cmd.Parameters.Add(new SqlParameter("kR", kRmh));
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(new SqlParameter("jART", jmlhA));
+                            cmd.Parameters.Add(new SqlParameter("jKK", jmlhK));
+                            cmd.Parameters.Add(new SqlParameter("jB", jBalita));
+                            cmd.Parameters.Add(new SqlParameter("jP", jPUS));
+                            cmd.Parameters.Add(new SqlParameter("jW", jWUS));
+                            cmd.Parameters.Add(new SqlParameter("jBta", jButa));
+                            cmd.Parameters.Add(new SqlParameter("jH", jHamil));
+                            cmd.Parameters.Add(new SqlParameter("jS", jBuSui));
+                            cmd.Parameters.Add(new SqlParameter("jL", jLansia));
+                            cmd.Parameters.Add(new SqlParameter("jbn", jamban));
+                            cmd.Parameters.Add(new SqlParameter("air", Lair));
+                            cmd.Parameters.Add(new SqlParameter("smph", sampah));
+                            cmd.Parameters.Add(new SqlParameter("lmbh", limbah));
+                            cmd.Parameters.Add(new SqlParameter("p4k", P4K));
+                            cmd.Parameters.Add(new SqlParameter("kR", kRmh));
+                        }
+                        cmd.ExecuteNonQuery();
+                        koneksi.Close();
+                        MessageBox.Show("Data Berhasil Diperbaruhi", "Sukses", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                        clearForm();
+                        dgv();
+                        editstate = false;
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Kesalahan Data");
+                }
+
+            }
         }
 
         private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -537,87 +676,16 @@ namespace siDIA_Project
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            string nRmh = tRmh.Text;
-            int jmlhA = int.Parse(tjART.Text);
-            int jmlhK = int.Parse(tJKK.Text);
-            int jBalita = int.Parse(tBalita.Text);
-            int jPUS = int.Parse(tPUS.Text);
-            int jWUS = int.Parse(tWUS.Text);
-            int jButa = int.Parse(tButa.Text);
-            int jHamil = int.Parse(tHamil.Text);
-            int jBuSui = int.Parse(tBuSui.Text);
-            int jLansia = int.Parse(tLansia.Text);
-            string jamban = cJamban.Text;
-            string air = cAir.Text;
-            string Lair = tAir.Text;
-            string sampah = cSampah.Text;
-            string limbah = cLimbah.Text;
-            string P4K = cP4K.Text;
-            string kRmh = cKRmh.Text;
-
-            DialogResult dg;
-            dg = MessageBox.Show("Apakah anda ingin mengubah data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (dg == DialogResult.Yes)
-            {
-                string str = "";
-
-                SqlConnection koneksi = new SqlConnection();
-                koneksi.ConnectionString = kn.strKoneksi();
-                koneksi.Open();
-                str = "update kesling set Jmlh_Total_Anggota_RT = @jART,Jmlh_KK = @jKK,Balita = @jB," +
-                    "PUS = @jP,WUS = @jW,Buta = @jBta,Ibu_Hamil = @jH,Ibu_Menyusui = @jS,Lansia = @jL," +
-                    "Mempunyai_Jamban = @jbn,Mempunyai_Sumber_Air = @air,Mempunyai_Tmpt_Sampah = @smph," +
-                    "Mempunyai_Saluran_Limbah = @lmbh,Stiker_P4K = @p4k,KriteriaRumah = @kR " +
-                    "where id_rumah = @idR";
-                SqlCommand cmd = new SqlCommand(str, koneksi);
-                cmd.CommandType = CommandType.Text;
-                cmd.Parameters.Add(new SqlParameter("@idR", nRmh));
-
-                if (!air.Equals("Lainnya"))
-                {
-                    cmd.Parameters.Add(new SqlParameter("jART", jmlhA));
-                    cmd.Parameters.Add(new SqlParameter("jKK", jmlhK));
-                    cmd.Parameters.Add(new SqlParameter("jB", jBalita));
-                    cmd.Parameters.Add(new SqlParameter("jP", jPUS));
-                    cmd.Parameters.Add(new SqlParameter("jW", jWUS));
-                    cmd.Parameters.Add(new SqlParameter("jBta", jButa));
-                    cmd.Parameters.Add(new SqlParameter("jH", jHamil));
-                    cmd.Parameters.Add(new SqlParameter("jS", jBuSui));
-                    cmd.Parameters.Add(new SqlParameter("jL", jLansia));
-                    cmd.Parameters.Add(new SqlParameter("jbn", jamban));
-                    cmd.Parameters.Add(new SqlParameter("air", air));
-                    cmd.Parameters.Add(new SqlParameter("smph", sampah));
-                    cmd.Parameters.Add(new SqlParameter("lmbh", limbah));
-                    cmd.Parameters.Add(new SqlParameter("p4k", P4K));
-                    cmd.Parameters.Add(new SqlParameter("kR", kRmh));
-                }
-                else
-                {
-                    cmd.Parameters.Add(new SqlParameter("jART", jmlhA));
-                    cmd.Parameters.Add(new SqlParameter("jKK", jmlhK));
-                    cmd.Parameters.Add(new SqlParameter("jB", jBalita));
-                    cmd.Parameters.Add(new SqlParameter("jP", jPUS));
-                    cmd.Parameters.Add(new SqlParameter("jW", jWUS));
-                    cmd.Parameters.Add(new SqlParameter("jBta", jButa));
-                    cmd.Parameters.Add(new SqlParameter("jH", jHamil));
-                    cmd.Parameters.Add(new SqlParameter("jS", jBuSui));
-                    cmd.Parameters.Add(new SqlParameter("jL", jLansia));
-                    cmd.Parameters.Add(new SqlParameter("jbn", jamban));
-                    cmd.Parameters.Add(new SqlParameter("air", Lair));
-                    cmd.Parameters.Add(new SqlParameter("smph", sampah));
-                    cmd.Parameters.Add(new SqlParameter("lmbh", limbah));
-                    cmd.Parameters.Add(new SqlParameter("p4k", P4K));
-                    cmd.Parameters.Add(new SqlParameter("kR", kRmh));
-                }
-                cmd.ExecuteNonQuery();
-                koneksi.Close();
-                MessageBox.Show("Data Berhasil Diperbaruhi", "Sukses", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                clearForm();
-                dgv();
-            }
-
+            editstate = true;
+            tButa.Enabled = true;
+            tHamil.Enabled = true;
+            tBuSui.Enabled = true;
+            cJamban.Enabled = true;
+            cAir.Enabled = true;
+            cSampah.Enabled = true;
+            cLimbah.Enabled = true;
+            cP4K.Enabled = true;
+            cKRmh.Enabled = true;
         }
 
         private void btnHapus_Click(object sender, EventArgs e)

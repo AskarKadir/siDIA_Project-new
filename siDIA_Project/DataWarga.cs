@@ -289,9 +289,7 @@ namespace siDIA_Project
 
         private void tNama_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && 
-            !char.IsSeparator(e.KeyChar) &&
-            !char.IsPunctuation(e.KeyChar) && (e.KeyChar != '.'))
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -359,17 +357,17 @@ namespace siDIA_Project
             }
             if (cJabatan.Text.Equals("Kepala Keluarga"))
             {
-                SqlConnection koneksi = new SqlConnection();
-                koneksi.ConnectionString = kn.strKoneksi();
-                koneksi.Open();
-                SqlDataAdapter da = new SqlDataAdapter("select Distinct id_rumah from rumah", koneksi);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                koneksi.Close();
+                //SqlConnection koneksi = new SqlConnection();
+                //koneksi.ConnectionString = kn.strKoneksi();
+                //koneksi.Open();
+                //SqlDataAdapter da = new SqlDataAdapter("select Distinct id_rumah from rumah", koneksi);
+                //DataSet ds = new DataSet();
+                //da.Fill(ds);
+                //koneksi.Close();
 
-                cNoReg.DisplayMember = "id_rumah";
-                cNoReg.ValueMember = "id_rumah";
-                cNoReg.DataSource = ds.Tables[0];
+                //cNoReg.DisplayMember = "id_rumah";
+                //cNoReg.ValueMember = "id_rumah";
+                //cNoReg.DataSource = ds.Tables[0];
                 //cNoReg.Enabled = true;
                 cNoReg.Visible = true;
                 tRT.Visible = false;
@@ -412,39 +410,93 @@ namespace siDIA_Project
         {
             if (addstate == true && editstate == false)
             {
-                if (cRT.Text.Equals("Kepala Rumah Tangga"))
+                if (cJabatan.Text.Equals("Kepala Keluarga"))
                 {
-                    int hasil = 0;
                     SqlConnection koneksi = new SqlConnection();
                     koneksi.ConnectionString = kn.strKoneksi();
                     koneksi.Open();
-                    SqlCommand cmd = new SqlCommand("select count(id_rumah) as totalRumah from rumah", koneksi);
-                    cmd.CommandType = CommandType.Text;
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    while (dr.Read())
-                    {
-                        hasil = Convert.ToInt32(dr["totalRumah"]) + 1;
-                    }
-                    dr.Close();
-                    if (hasil < 10)
-                    {
-                        tRT.Text = "RMH" + "00" + hasil + "-" + tNama.Text;
-                    }
-                    else if (hasil >= 10)
-                    {
-                        tRT.Text = "RMH" + "00" + hasil + "-" + tNama.Text;
-                    }
-                    else if (hasil > 99)
-                    {
-                        tRT.Text = "RMH" + hasil + "-" + tNama.Text;
-                    }
+                    SqlDataAdapter da = new SqlDataAdapter("select Distinct id_rumah from rumah", koneksi);
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+                    koneksi.Close();
+
+                    cNoReg.DisplayMember = "id_rumah";
+                    cNoReg.ValueMember = "id_rumah";
+                    cNoReg.DataSource = ds.Tables[0];
+                    cNoReg.Enabled = true;
+                    cNoReg.Visible = true;
                     tRT.Visible = true;
-                    cNoReg.Visible = false;
+                    if (cRT.Text.Equals("Kepala Rumah Tangga"))
+                    {
+                        int hasil = 0;
+                        koneksi = new SqlConnection();
+                        koneksi.ConnectionString = kn.strKoneksi();
+                        koneksi.Open();
+                        SqlCommand cmd = new SqlCommand("select count(id_rumah) as totalRumah from rumah", koneksi);
+                        cmd.CommandType = CommandType.Text;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        while (dr.Read())
+                        {
+                            hasil = Convert.ToInt32(dr["totalRumah"]) + 1;
+                        }
+                        dr.Close();
+                        if (hasil < 10)
+                        {
+                            tRT.Text = "RMH" + "00" + hasil + "-" + tNama.Text;
+                        }
+                        else if (hasil >= 10)
+                        {
+                            tRT.Text = "RMH" + "00" + hasil + "-" + tNama.Text;
+                        }
+                        else if (hasil > 99)
+                        {
+                            tRT.Text = "RMH" + hasil + "-" + tNama.Text;
+                        }
+                        tRT.Visible = true;
+                        cNoReg.Visible = false;
+                    }
+                    else
+                    {
+                        string kk = cKK.Text;
+                        Console.WriteLine("lumba wokowkw : " + kk);
+                        string nRT = "";
+                        koneksi = new SqlConnection();
+                        koneksi.ConnectionString = kn.strKoneksi();
+                        koneksi.Open();
+                        SqlCommand cm = new SqlCommand("select id_rumah from warga where no_KK = @nKK", koneksi);
+                        cm.CommandType = CommandType.Text;
+                        cm.Parameters.Add(new SqlParameter("@nKK", kk));
+                        SqlDataReader dr = cm.ExecuteReader();
+                        while (dr.Read())
+                        {
+                            nRT = dr["id_rumah"].ToString();
+
+                        }
+                        dr.Close();
+                        tRT.Text = nRT;
+                        tRT.Visible = false;
+                        tRT.Enabled = false;
+                        cNoReg.Text = nRT;
+                        cNoReg.Enabled = true;
+                        cNoReg.Visible = true;
+
+                        string idRumah = nRT;
+                        SqlCommand cmdAlamat = new SqlCommand("SELECT alamat FROM rumah WHERE id_rumah = @idRumah", koneksi);
+                        cmdAlamat.CommandType = CommandType.Text;
+                        cmdAlamat.Parameters.AddWithValue("@idRumah", nRT);
+                        SqlDataReader drAlamat = cmdAlamat.ExecuteReader();
+
+                        if (drAlamat.Read())
+                        {
+                            tAlamat.Text = drAlamat["alamat"].ToString();
+                            tAlamat.Enabled = false;
+                        }
+                        drAlamat.Close();
+                    }
                 }
                 else
                 {
                     string kk = cKK.Text;
-                    Console.WriteLine("lumba wokowkw : " + kk);
                     string nRT = "";
                     SqlConnection koneksi = new SqlConnection();
                     koneksi.ConnectionString = kn.strKoneksi();
@@ -462,10 +514,8 @@ namespace siDIA_Project
                     tRT.Text = nRT;
                     tRT.Visible = true;
                     tRT.Enabled = false;
-                    //cNoReg.Text = nRT;
                     cNoReg.Enabled = false;
                     cNoReg.Visible = false;
-
                     string idRumah = nRT;
                     SqlCommand cmdAlamat = new SqlCommand("SELECT alamat FROM rumah WHERE id_rumah = @idRumah", koneksi);
                     cmdAlamat.CommandType = CommandType.Text;
@@ -498,6 +548,73 @@ namespace siDIA_Project
                     cNoReg.Enabled = true;
                     cNoReg.Visible = true;
                     tRT.Visible = true;
+                    if (cRT.Text.Equals("Kepala Rumah Tangga"))
+                    {
+                        int hasil = 0;
+                        koneksi = new SqlConnection();
+                        koneksi.ConnectionString = kn.strKoneksi();
+                        koneksi.Open();
+                        SqlCommand cmd = new SqlCommand("select count(id_rumah) as totalRumah from rumah", koneksi);
+                        cmd.CommandType = CommandType.Text;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        while (dr.Read())
+                        {
+                            hasil = Convert.ToInt32(dr["totalRumah"]) + 1;
+                        }
+                        dr.Close();
+                        if (hasil < 10)
+                        {
+                            tRT.Text = "RMH" + "00" + hasil + "-" + tNama.Text;
+                        }
+                        else if (hasil >= 10)
+                        {
+                            tRT.Text = "RMH" + "00" + hasil + "-" + tNama.Text;
+                        }
+                        else if (hasil > 99)
+                        {
+                            tRT.Text = "RMH" + hasil + "-" + tNama.Text;
+                        }
+                        tRT.Visible = true;
+                        cNoReg.Visible = false;
+                    }
+                    else
+                    {
+                        string kk = cKK.Text;
+                        Console.WriteLine("lumba wokowkw : " + kk);
+                        string nRT = "";
+                        koneksi = new SqlConnection();
+                        koneksi.ConnectionString = kn.strKoneksi();
+                        koneksi.Open();
+                        SqlCommand cm = new SqlCommand("select id_rumah from warga where no_KK = @nKK", koneksi);
+                        cm.CommandType = CommandType.Text;
+                        cm.Parameters.Add(new SqlParameter("@nKK", kk));
+                        SqlDataReader dr = cm.ExecuteReader();
+                        while (dr.Read())
+                        {
+                            nRT = dr["id_rumah"].ToString();
+
+                        }
+                        dr.Close();
+                        tRT.Text = nRT;
+                        tRT.Visible = false;
+                        tRT.Enabled = false;
+                        cNoReg.Text = nRT;
+                        cNoReg.Enabled = true;
+                        cNoReg.Visible = true;
+
+                        string idRumah = nRT;
+                        SqlCommand cmdAlamat = new SqlCommand("SELECT alamat FROM rumah WHERE id_rumah = @idRumah", koneksi);
+                        cmdAlamat.CommandType = CommandType.Text;
+                        cmdAlamat.Parameters.AddWithValue("@idRumah", nRT);
+                        SqlDataReader drAlamat = cmdAlamat.ExecuteReader();
+
+                        if (drAlamat.Read())
+                        {
+                            tAlamat.Text = drAlamat["alamat"].ToString();
+                            tAlamat.Enabled = false;
+                        }
+                        drAlamat.Close();
+                    }
                 }
                 else
                 {
@@ -535,7 +652,6 @@ namespace siDIA_Project
                     drAlamat.Close();
                 }
             }
-
         }
 
             private void cNoReg_TextChanged(object sender, EventArgs e)
@@ -629,6 +745,7 @@ namespace siDIA_Project
             dgv();
             addstate = false;
             editstate = false;
+            tAlamat.Enabled = true;
         }
 
         private void clearForm()
@@ -1644,6 +1761,30 @@ namespace siDIA_Project
                 tCari.Enabled = true;
             }
             
+        }
+
+        private void tTempat_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tPLain_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsPunctuation(e.KeyChar) && !char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tCari_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

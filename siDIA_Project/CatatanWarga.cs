@@ -100,8 +100,8 @@ namespace siDIA_Project
             SqlConnection koneksi = new SqlConnection();
             koneksi.ConnectionString = kn.strKoneksi();
             koneksi.Open();
-            SqlCommand cmd = new SqlCommand("select nama from warga where status_dalam_rumah_tangga like 'Kepala Rumah Tangga'", koneksi);
-            SqlDataAdapter da = new SqlDataAdapter("select nama from warga where status_dalam_rumah_tangga like 'Kepala Rumah Tangga'", koneksi);
+            SqlCommand cmd = new SqlCommand("select nama from warga w join kesling k on w.id_rumah = k.id_rumah where status_dalam_rumah_tangga like 'Kepala Rumah Tangga' ", koneksi);
+            SqlDataAdapter da = new SqlDataAdapter("select nama from warga w join kesling k on w.id_rumah = k.id_rumah where status_dalam_rumah_tangga like 'Kepala Rumah Tangga' ", koneksi);
             DataSet ds = new DataSet();
             da.Fill(ds);
             cmd.ExecuteReader();
