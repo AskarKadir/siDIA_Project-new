@@ -49,80 +49,92 @@ namespace siDIA_Project
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (addstate == true)
+            SqlConnection koneksi = new SqlConnection();
+            koneksi.ConnectionString = kn.strKoneksi();
+            koneksi.Open();
+            try
             {
-                clearForm();
-                dgv();
-            }
-            else
-            {
-                string str = "";
-                SqlConnection koneksi = new SqlConnection();
-                koneksi.ConnectionString = kn.strKoneksi();
-                koneksi.Open();
-
-                string nma = cNama.Text;
-                string nik = tNIK.Text;
-                string nreg = tNoreg.Text;
-                string sKK = tJKK.Text;
-                string nKK = tKK.Text;
-                string sRT = tJRT.Text;
-                string idRT = tRT.Text;
-                string tmpt = tTempat.Text;
-                DateTime tglL = dateTimePicker1.Value.Date;
-                string JK = tJK.Text;
-                string agama = tAgama.Text;
-                string alamat = tAlamat.Text;
-                string didik = tdidik.Text;
-                string kerja = tKerja.Text;
-                string sKwin = tKawin.Text;
-                string BPJS = tBPJS.Text;
-
-                DialogResult dg;
-                dg = MessageBox.Show("Apakah anda ingin menghapus data ini?", "Konfirmasi Hapus Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (dg == DialogResult.Yes)
+                if (addstate == true)
                 {
-                    str = "delete from kematian where nama = @Nm";
-                    SqlCommand cmd = new SqlCommand(str, koneksi);
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.Add(new SqlParameter("Nm", nma));
-                    cmd.ExecuteNonQuery();
-
-                    string Istr = "insert into warga (no_reg,No_KK,NIK,Nama,status_dalam_keluarga,status_dalam_rumah_tangga, " +
-                        "jenis_kelamin,tempat_lahir,tanggal_lahir,agama,pendidikan,pekerjaan,status_perkawinan, " +
-                        "status_bpjs,id_rumah) values (@nreg,@nkk,@nik,@nma,@sk,@srt,@jk,@tl,@tgl,@ag,@pdk,@pkj," +
-                        "@sp,@sbpjs,@idR)";
-                    SqlCommand cm = new SqlCommand(Istr, koneksi);
-                    cm.CommandType = CommandType.Text;
-
-                    cm.Parameters.Add(new SqlParameter("nreg", nreg));
-                    cm.Parameters.Add(new SqlParameter("nkk", nKK));
-                    cm.Parameters.Add(new SqlParameter("nik", nik));
-                    cm.Parameters.Add(new SqlParameter("nma", nma));
-                    cm.Parameters.Add(new SqlParameter("sk", sKK));
-                    cm.Parameters.Add(new SqlParameter("srt", sRT));
-                    cm.Parameters.Add(new SqlParameter("jk", JK));
-                    //cm.Parameters.Add(new SqlParameter("almt", alamat));
-                    cm.Parameters.Add(new SqlParameter("tl", tmpt));
-                    cm.Parameters.Add(new SqlParameter("tgl", tglL));
-                    cm.Parameters.Add(new SqlParameter("ag", agama));
-                    cm.Parameters.Add(new SqlParameter("pdk", didik));
-                    cm.Parameters.Add(new SqlParameter("pkj", kerja));
-                    cm.Parameters.Add(new SqlParameter("sp", sKwin));
-                    cm.Parameters.Add(new SqlParameter("sbpjs", BPJS));
-                    cm.Parameters.Add(new SqlParameter("idR", idRT));
-
-                    cm.ExecuteNonQuery();
-
-                    koneksi.Close();
-                    MessageBox.Show("Data Berhasil Dihapus", "Sukses", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
                     clearForm();
                     dgv();
-                    jmlWrgM();
+                }
+                else
+                {
+                    string str = "";
+
+                    string nma = cNama.Text;
+                    string nik = tNIK.Text;
+                    string nreg = tNoreg.Text;
+                    string sKK = tJKK.Text;
+                    string nKK = tKK.Text;
+                    string sRT = tJRT.Text;
+                    string idRT = tRT.Text;
+                    string tmpt = tTempat.Text;
+                    DateTime tglL = dateTimePicker1.Value.Date;
+                    string JK = tJK.Text;
+                    string agama = tAgama.Text;
+                    string alamat = tAlamat.Text;
+                    string didik = tdidik.Text;
+                    string kerja = tKerja.Text;
+                    string sKwin = tKawin.Text;
+                    string BPJS = tBPJS.Text;
+
+                    DialogResult dg;
+                    dg = MessageBox.Show("Apakah anda ingin menghapus data ini?", "Konfirmasi Hapus Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (dg == DialogResult.Yes)
+                    {
+                        str = "delete from kematian where nama = @Nm";
+                        SqlCommand cmd = new SqlCommand(str, koneksi);
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.Add(new SqlParameter("Nm", nma));
+                        cmd.ExecuteNonQuery();
+
+                        string Istr = "insert into warga (no_reg,No_KK,NIK,Nama,status_dalam_keluarga,status_dalam_rumah_tangga, " +
+                            "jenis_kelamin,tempat_lahir,tanggal_lahir,agama,pendidikan,pekerjaan,status_perkawinan, " +
+                            "status_bpjs,id_rumah) values (@nreg,@nkk,@nik,@nma,@sk,@srt,@jk,@tl,@tgl,@ag,@pdk,@pkj," +
+                            "@sp,@sbpjs,@idR)";
+                        SqlCommand cm = new SqlCommand(Istr, koneksi);
+                        cm.CommandType = CommandType.Text;
+
+                        cm.Parameters.Add(new SqlParameter("nreg", nreg));
+                        cm.Parameters.Add(new SqlParameter("nkk", nKK));
+                        cm.Parameters.Add(new SqlParameter("nik", nik));
+                        cm.Parameters.Add(new SqlParameter("nma", nma));
+                        cm.Parameters.Add(new SqlParameter("sk", sKK));
+                        cm.Parameters.Add(new SqlParameter("srt", sRT));
+                        cm.Parameters.Add(new SqlParameter("jk", JK));
+                        //cm.Parameters.Add(new SqlParameter("almt", alamat));
+                        cm.Parameters.Add(new SqlParameter("tl", tmpt));
+                        cm.Parameters.Add(new SqlParameter("tgl", tglL));
+                        cm.Parameters.Add(new SqlParameter("ag", agama));
+                        cm.Parameters.Add(new SqlParameter("pdk", didik));
+                        cm.Parameters.Add(new SqlParameter("pkj", kerja));
+                        cm.Parameters.Add(new SqlParameter("sp", sKwin));
+                        cm.Parameters.Add(new SqlParameter("sbpjs", BPJS));
+                        cm.Parameters.Add(new SqlParameter("idR", idRT));
+
+                        cm.ExecuteNonQuery();
+
+                        koneksi.Close();
+                        MessageBox.Show("Data Berhasil Dihapus", "Sukses", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                        clearForm();
+                        dgv();
+                        jmlWrgM();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error : " + ex);
+            }
+            finally
+            {
+                koneksi.Close();
+            }
+            
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -153,163 +165,186 @@ namespace siDIA_Project
             {
                 if (addstate == true)
                 {
-                    Console.WriteLine("selected cell add state");
+                    int datafound = 0;
+                    SqlConnection cekkoneksi = new SqlConnection();
+                    cekkoneksi.ConnectionString = kn.strKoneksi();
+                    cekkoneksi.Open();
 
-                    string noKM = "";
-                    string nik = tNIK.Text;
-                    string nreg = tNoreg.Text;
-                    string nama = cNama.Text;
-                    string sKK = tJKK.Text;
-                    string nKK = tKK.Text;
-                    string sRT = tJRT.Text;
-                    string idRT = tRT.Text;
-                    string tmpt = tTempat.Text;
-                    DateTime tglL = dateTimePicker1.Value.Date;
-                    string JK = tJK.Text;
-                    string agama = tAgama.Text;
-                    string alamat = tAlamat.Text;
-                    string didik = tdidik.Text;
-                    string kerja = tKerja.Text;
-                    string sKwin = tKawin.Text;
-                    string BPJS = tBPJS.Text;
-                    DateTime tglM = dtMati.Value.Date;
+                    SqlTransaction transaction = cekkoneksi.BeginTransaction(); // Begin transaction
 
-                    DialogResult dg;
-                    dg = MessageBox.Show("Apakah data yang anda masukan sudah sesuai?", "Konfirmasi Tambah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (dg == DialogResult.Yes)
+                    try
                     {
-                        //cek nama dan nik apakah ada
-                        int datafound = 0;
-                        SqlConnection cekkoneksi = new SqlConnection();
-                        cekkoneksi.ConnectionString = kn.strKoneksi();
-                        cekkoneksi.Open();
-                        SqlCommand cekcm = new SqlCommand("select nik,nama from warga where nik='" +
-                            nik +
-                            "' and " +
-                            "nama='" +
-                            nama +
-                            "'", cekkoneksi);
-                        SqlDataReader cekdr = cekcm.ExecuteReader();
-                        while (cekdr.Read())
+                        Console.WriteLine("selected cell add state");
+
+                        string noKM = "";
+                        string nik = tNIK.Text;
+                        string nreg = tNoreg.Text;
+                        string nama = cNama.Text;
+                        string sKK = tJKK.Text;
+                        string nKK = tKK.Text;
+                        string sRT = tJRT.Text;
+                        string idRT = tRT.Text;
+                        string tmpt = tTempat.Text;
+                        DateTime tglL = dateTimePicker1.Value.Date;
+                        string JK = tJK.Text;
+                        string agama = tAgama.Text;
+                        string alamat = tAlamat.Text;
+                        string didik = tdidik.Text;
+                        string kerja = tKerja.Text;
+                        string sKwin = tKawin.Text;
+                        string BPJS = tBPJS.Text;
+                        DateTime tglM = dtMati.Value.Date;
+
+                        DialogResult dg;
+                        dg = MessageBox.Show("Apakah data yang anda masukan sudah sesuai?", "Konfirmasi Tambah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (dg == DialogResult.Yes)
                         {
-                            datafound = 1;
-                        }
-                        if (datafound == 1)
-                        {
-                            int maxNoKM = 0;
-                            SqlConnection koneksi = new SqlConnection();
-                            koneksi.ConnectionString = kn.strKoneksi();
-                            koneksi.Open();
-                            SqlCommand cm = new SqlCommand("select max(cast(substring(No_Kematian, 3, len(No_Kematian) - 2) as int)) as 'MaxNoKM' from kematian", koneksi);
-                            cm.CommandType = CommandType.Text;
-                            SqlDataReader dr = cm.ExecuteReader();
-                            if (dr.Read() && !dr.IsDBNull(0))
+                            // Cek nama dan NIK apakah ada
+                            SqlCommand cekcm = new SqlCommand("SELECT nik,nama FROM warga WHERE nik=@nik AND nama=@nama", cekkoneksi, transaction);
+                            cekcm.Parameters.AddWithValue("@nik", nik);
+                            cekcm.Parameters.AddWithValue("@nama", nama);
+                            SqlDataReader cekdr = cekcm.ExecuteReader();
+
+                            while (cekdr.Read())
                             {
-                                maxNoKM = Convert.ToInt32(dr["MaxNoKM"]);
+                                datafound = 1;
                             }
-                            dr.Close();
+                            cekdr.Close();
 
-                            noKM = "";
-
-                            // Check if there are deleted entries with lower identifiers
-                            for (int i = 1; i <= maxNoKM; i++)
+                            if (datafound == 1)
                             {
-                                string potentialNoKM = "KM" + i.ToString().PadLeft(3, '0');
-                                SqlCommand checkCmd = new SqlCommand("select count(No_Kematian) from kematian where No_Kematian = @No_Kematian", koneksi);
-                                checkCmd.Parameters.AddWithValue("@No_Kematian", potentialNoKM);
-                                int count = (int)checkCmd.ExecuteScalar();
-                                if (count == 0)
+                                int maxNoKM = 0;
+                                SqlCommand cm = new SqlCommand("SELECT MAX(CAST(SUBSTRING(No_Kematian, 3, LEN(No_Kematian) - 2) AS int)) AS 'MaxNoKM' FROM kematian", cekkoneksi, transaction);
+                                SqlDataReader dr = cm.ExecuteReader();
+                                if (dr.Read() && !dr.IsDBNull(0))
                                 {
-                                    // This identifier is available
-                                    noKM = potentialNoKM;
-                                    break;
+                                    maxNoKM = Convert.ToInt32(dr["MaxNoKM"]);
                                 }
-                            }
+                                dr.Close();
 
-                            if (noKM == "")
+                                noKM = "";
+
+                                // Check if there are deleted entries with lower identifiers
+                                for (int i = 1; i <= maxNoKM; i++)
+                                {
+                                    string potentialNoKM = "KM" + i.ToString().PadLeft(3, '0');
+                                    SqlCommand checkCmd = new SqlCommand("SELECT COUNT(No_Kematian) FROM kematian WHERE No_Kematian = @No_Kematian", cekkoneksi, transaction);
+                                    checkCmd.Parameters.AddWithValue("@No_Kematian", potentialNoKM);
+                                    int count = (int)checkCmd.ExecuteScalar();
+                                    if (count == 0)
+                                    {
+                                        noKM = potentialNoKM;
+                                        break;
+                                    }
+                                }
+
+                                if (noKM == "")
+                                {
+                                    int nextNoKM = maxNoKM + 1;
+                                    noKM = "KM" + nextNoKM.ToString().PadLeft(3, '0');
+                                }
+
+                                string str = "INSERT INTO kematian (No_Kematian, no_Reg, No_KK, NIK, Nama, status_dalam_keluarga, status_dalam_rumah_tangga, jenis_kelamin, alamat, tempat_lahir, tanggal_lahir, agama, pendidikan, pekerjaan, status_perkawinan, status_bpjs, id_rumah, Tgl_Kematian) " +
+                                             "VALUES (@nokm, @nreg, @nkk, @nik, @nma, @sk, @srt, @jk, @almt, @tl, @tglL, @ag, @pdk, @pkj, @sp, @sbpjs, @idR, @tglM)";
+
+                                SqlCommand cmd = new SqlCommand(str, cekkoneksi, transaction);
+                                cmd.Parameters.AddWithValue("@nokm", noKM);
+                                cmd.Parameters.AddWithValue("@nreg", nreg);
+                                cmd.Parameters.AddWithValue("@nkk", nKK);
+                                cmd.Parameters.AddWithValue("@nik", nik);
+                                cmd.Parameters.AddWithValue("@nma", nama);
+                                cmd.Parameters.AddWithValue("@sk", sKK);
+                                cmd.Parameters.AddWithValue("@srt", sRT);
+                                cmd.Parameters.AddWithValue("@jk", JK);
+                                cmd.Parameters.AddWithValue("@almt", alamat);
+                                cmd.Parameters.AddWithValue("@tl", tmpt);
+                                cmd.Parameters.AddWithValue("@tglL", tglL);
+                                cmd.Parameters.AddWithValue("@ag", agama);
+                                cmd.Parameters.AddWithValue("@pdk", didik);
+                                cmd.Parameters.AddWithValue("@pkj", kerja);
+                                cmd.Parameters.AddWithValue("@sp", sKwin);
+                                cmd.Parameters.AddWithValue("@sbpjs", BPJS);
+                                cmd.Parameters.AddWithValue("@idR", idRT);
+                                cmd.Parameters.AddWithValue("@tglM", tglM);
+
+                                cmd.ExecuteNonQuery();
+
+                                // Delete from warga
+                                string strd = "DELETE FROM warga WHERE no_reg = @nreg";
+                                SqlCommand scmd = new SqlCommand(strd, cekkoneksi, transaction);
+                                scmd.Parameters.AddWithValue("@nreg", nreg);
+                                scmd.ExecuteNonQuery();
+
+                                // Commit transaction
+                                transaction.Commit();
+                                MessageBox.Show("Data Berhasil Ditambahkan", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                defaultbuttonstate();
+                                clearForm();
+                                dgv();
+                                jmlWrgM();
+                            }
+                            else
                             {
-                                // If no deleted identifiers are available, generate a new one
-                                int nextNoKM = maxNoKM + 1;
-                                noKM = "KM" + nextNoKM.ToString().PadLeft(3, '0');
+                                MessageBox.Show("Kesalahan Input Data, Mohon Diperiksa Kembali", "Tidak Dapat Menemukan Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
-                            string str = "";
-
-                            str = "insert into kematian (No_Kematian,no_Reg, No_KK,NIK,Nama,status_dalam_keluarga," +
-                                "status_dalam_rumah_tangga, jenis_kelamin,alamat,tempat_lahir,tanggal_lahir,agama," +
-                                "pendidikan,pekerjaan,status_perkawinan,status_bpjs,id_rumah,Tgl_Kematian) " +
-                                "values (@nokm,@nreg,@nkk,@nik,@nma,@sk,@srt,@jk,@almt,@tl,@tglL,@ag,@pdk,@pkj," +
-                                "@sp,@sbpjs,@idR,@tglM)";
-                            SqlCommand cmd = new SqlCommand(str, koneksi);
-                            cmd.CommandType = CommandType.Text;
-
-                            cmd.Parameters.Add(new SqlParameter("nokm", noKM));
-                            cmd.Parameters.Add(new SqlParameter("nreg", nreg));
-                            cmd.Parameters.Add(new SqlParameter("nkk", nKK));
-                            cmd.Parameters.Add(new SqlParameter("nik", nik));
-                            cmd.Parameters.Add(new SqlParameter("nma", nama));
-                            cmd.Parameters.Add(new SqlParameter("sk", sKK));
-                            cmd.Parameters.Add(new SqlParameter("srt", sRT));
-                            cmd.Parameters.Add(new SqlParameter("jk", JK));
-                            cmd.Parameters.Add(new SqlParameter("almt", alamat));
-                            cmd.Parameters.Add(new SqlParameter("tl", tmpt));
-                            cmd.Parameters.Add(new SqlParameter("tglL", tglL));
-                            cmd.Parameters.Add(new SqlParameter("ag", agama));
-                            cmd.Parameters.Add(new SqlParameter("pdk", didik));
-                            cmd.Parameters.Add(new SqlParameter("pkj", kerja));
-                            cmd.Parameters.Add(new SqlParameter("sp", sKwin));
-                            cmd.Parameters.Add(new SqlParameter("sbpjs", BPJS));
-                            cmd.Parameters.Add(new SqlParameter("idR", idRT));
-                            cmd.Parameters.Add(new SqlParameter("tglM", tglM));
-
-                            cmd.ExecuteNonQuery();
-
-                            string strd = "delete from warga where no_reg = @nreg";
-                            SqlCommand scmd = new SqlCommand(strd, koneksi);
-                            scmd.CommandType = CommandType.Text;
-                            scmd.Parameters.Add(new SqlParameter("nreg", nreg));
-                            scmd.ExecuteNonQuery();
-
-                            koneksi.Close();
-                            MessageBox.Show("Data Berhasil DiTambahkan", "Sukses", MessageBoxButtons.OK,
-                                        MessageBoxIcon.Information);
-                            defaultbuttonstate();
-                            clearForm();
-                            dgv();
-                            jmlWrgM();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Kesalahan Input Data, Mohon Diperiksa Kembali", "Tidak Dapat Menemukan Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        // Rollback transaction on error
+                        transaction.Rollback();
+                        MessageBox.Show("Gagal Menambahkan Data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        cekkoneksi.Close();
+                    }
+
                 }
                 else
                 {
-                    string Nma = cNama.Text;
-                    DateTime tglM = dtMati.Value.Date;
+                    SqlConnection koneksi = new SqlConnection();
+                    koneksi.ConnectionString = kn.strKoneksi();
+                    koneksi.Open();
+                    SqlTransaction transaction = koneksi.BeginTransaction();
 
-                    DialogResult dg;
-                    dg = MessageBox.Show("Apakah anda ingin mengubah data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (dg == DialogResult.Yes)
+                    try
                     {
-                        string str = "";
+                        DateTime tglM = dtMati.Value.Date;
 
-                        SqlConnection koneksi = new SqlConnection();
-                        koneksi.ConnectionString = kn.strKoneksi();
-                        koneksi.Open();
-                        str = "update kematian set Tgl_Kematian = @tgM where Nama = @nm";
-                        SqlCommand cmd = new SqlCommand(str, koneksi);
-                        cmd.CommandType = CommandType.Text;
-                        cmd.Parameters.Add(new SqlParameter("@nm", Nma));
-                        cmd.Parameters.Add(new SqlParameter("@tgM", tglM));
+                        DialogResult dg = MessageBox.Show("Apakah anda ingin mengubah data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                        cmd.ExecuteNonQuery();
-                        koneksi.Close();
-                        MessageBox.Show("Data Berhasil Diperbaruhi", "Sukses", MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
+                        if (dg == DialogResult.Yes)
+                        {
+                            string str = "UPDATE kematian SET Tgl_Kematian = @tgM WHERE no_reg = @no_reg";
+                            SqlCommand cmd = new SqlCommand(str, koneksi, transaction); // Tambahkan 'transaction' ke SqlCommand
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Parameters.Add(new SqlParameter("@no_reg", tNoreg.Text));
+                            cmd.Parameters.Add(new SqlParameter("@tgM", tglM));
+
+                            // Eksekusi perintah UPDATE
+                            cmd.ExecuteNonQuery();
+
+                            // Commit transaksi jika sukses
+                            transaction.Commit();
+                            MessageBox.Show("Data Berhasil Diperbarui", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            btnRefresh_Click(null, null);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        // Rollback transaksi jika terjadi kesalahan
+                        transaction.Rollback();
+                        MessageBox.Show("Gagal Mengubah Data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        // Pastikan koneksi selalu ditutup
+                        koneksi.Close();
+                    }
+
                 }
             }
             else

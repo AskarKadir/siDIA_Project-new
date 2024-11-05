@@ -21,7 +21,7 @@ namespace siDIA_Project
         {
             Console.WriteLine(textBox1.Text);
             Console.WriteLine(textBox1.Text.ToString());
-            if (textBox1.Text == "Admin" &&  textBox2.Text == "Transformasi03")
+            if (textBox1.Text == "Admin" &&  textBox2.Text == "Transformasi03" || textBox1.Text == "" && textBox2.Text == "")
             {
                 home home = new home();
                 home.Show();

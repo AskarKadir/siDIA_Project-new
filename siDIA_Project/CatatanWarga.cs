@@ -35,6 +35,9 @@ namespace siDIA_Project
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+            SqlConnection koneksi = new SqlConnection();
+            koneksi.ConnectionString = kn.strKoneksi();
+            koneksi.Open();
             try
             {
                 //MessageBox.Show("Dalam Proses Perbaikan", "Pemberitahuan", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -44,9 +47,6 @@ namespace siDIA_Project
                 //Console.WriteLine(tahun);
                 string nmKRT = NKRT.Text;
                 //Console.WriteLine(nmKRT);
-                SqlConnection koneksi = new SqlConnection();
-                koneksi.ConnectionString = kn.strKoneksi();
-                koneksi.Open();
                 SqlCommand cmd = new SqlCommand("Select id_rumah from warga where nama = @nama", koneksi);
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.Add(new SqlParameter("@nama", nmKRT));
@@ -91,7 +91,11 @@ namespace siDIA_Project
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Gagal Mendapatkan Data : " + ex.Message,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
+            finally
+            {
+                koneksi.Close();
             }
         }
 

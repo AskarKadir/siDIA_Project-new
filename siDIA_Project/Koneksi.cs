@@ -10,10 +10,10 @@ namespace siDIA_Project
     {
         public String strKoneksi()
         {
-            //string strKoneksi = "Data Source = localhost; Initial Catalog = siDIA;" +
-            //"Integrated Security = True;";
-            string strKoneksi = "Data Source = DESKTOP-9I14KGV\\SQLEXPRESS; Initial Catalog = siDIA1;" +
-            "User ID = sidia; Password = 12345678";
+            string strKoneksi = "Data Source = localhost\\SQLEXPRESS; Initial Catalog = siDIA1;" +
+            "Integrated Security = True;";
+            //string strKoneksi = "Data Source = DESKTOP-9I14KGV\\SQLEXPRESS; Initial Catalog = siDIA1;" +
+            //"User ID = sidia; Password = 12345678";
             return strKoneksi;
         }
     }

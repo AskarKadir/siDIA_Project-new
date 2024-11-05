@@ -686,6 +686,10 @@ namespace siDIA_Project
             cLimbah.Enabled = true;
             cP4K.Enabled = true;
             cKRmh.Enabled = true;
+            btnAdd.Visible = false;
+            btnAdd.Enabled = false;
+            btnSimpan.Visible = true;
+            btnSimpan.Enabled = true;
         }
 
         private void btnHapus_Click(object sender, EventArgs e)
@@ -696,21 +700,39 @@ namespace siDIA_Project
             koneksi.Open();
 
             string noRmh = tRmh.Text;
-            DialogResult dg;
-            dg = MessageBox.Show("Apakah anda ingin menghapus data ini?", "Konfirmasi Ubah Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dg = MessageBox.Show("Apakah anda ingin menghapus data ini?", "Konfirmasi Hapus Data", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (dg == DialogResult.Yes)
             {
-                str = "delete from kesling where id_Rumah = @no_rmh";
-                SqlCommand cmd = new SqlCommand(str, koneksi);
-                cmd.CommandType = CommandType.Text;
-                cmd.Parameters.Add(new SqlParameter("no_rmh", noRmh));
-                cmd.ExecuteNonQuery();
-                koneksi.Close();
-                MessageBox.Show("Data Berhasil Dihapus", "Sukses", MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-                clearForm();
-                dgv();
+                try
+                {
+                    str = "DELETE FROM kesling WHERE id_Rumah = @no_rmh";
+                    SqlCommand cmd = new SqlCommand(str, koneksi);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.Add(new SqlParameter("no_rmh", noRmh));
+
+                    // Eksekusi perintah DELETE
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Data Berhasil Dihapus", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        clearForm();
+                        dgv();  // Memuat ulang data ke dalam DataGridView
+                    }
+                    else
+                    {
+                        MessageBox.Show("Data tidak ditemukan atau gagal dihapus.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    koneksi.Close(); // Pastikan koneksi selalu ditutup
+                }
             }
         }
 

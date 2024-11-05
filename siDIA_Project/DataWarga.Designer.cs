@@ -35,6 +35,7 @@
             this.fWarga = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSwitchNoRumah = new System.Windows.Forms.PictureBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.Noreg = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -45,20 +46,20 @@
             this.cPendidikan = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.cAgama = new System.Windows.Forms.ComboBox();
-            this.label16 = new System.Windows.Forms.Label();
             this.cNoReg = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.tRT = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.cRT = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.cKK = new System.Windows.Forms.ComboBox();
             this.tNama = new System.Windows.Forms.TextBox();
             this.tStatusKawin = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tAlamat = new System.Windows.Forms.TextBox();
             this.cJK = new System.Windows.Forms.ComboBox();
             this.tTempat = new System.Windows.Forms.TextBox();
-            this.cKK = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tKK = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -85,6 +86,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSwitchNoRumah)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnAdd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).BeginInit();
@@ -99,7 +101,7 @@
             this.topBar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.topBar.Dock = System.Windows.Forms.DockStyle.Right;
             this.topBar.Location = new System.Drawing.Point(787, 0);
-            this.topBar.Margin = new System.Windows.Forms.Padding(2);
+            this.topBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.topBar.Name = "topBar";
             this.topBar.Size = new System.Drawing.Size(39, 690);
             this.topBar.TabIndex = 0;
@@ -108,7 +110,7 @@
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
             this.pictureBox2.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(34, 33);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -119,12 +121,11 @@
             // tCari
             // 
             this.tCari.Location = new System.Drawing.Point(260, 76);
-            this.tCari.Margin = new System.Windows.Forms.Padding(2);
+            this.tCari.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tCari.Name = "tCari";
             this.tCari.Size = new System.Drawing.Size(211, 20);
             this.tCari.TabIndex = 1;
             this.tCari.TextChanged += new System.EventHandler(this.tCari_TextChanged);
-            this.tCari.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tCari_KeyPress);
             // 
             // fWarga
             // 
@@ -142,7 +143,7 @@
             "Buruh/Karyawan",
             "Lainnya"});
             this.fWarga.Location = new System.Drawing.Point(475, 76);
-            this.fWarga.Margin = new System.Windows.Forms.Padding(2);
+            this.fWarga.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.fWarga.Name = "fWarga";
             this.fWarga.Size = new System.Drawing.Size(92, 21);
             this.fWarga.TabIndex = 2;
@@ -152,20 +153,24 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridView1.Location = new System.Drawing.Point(446, 117);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(334, 563);
             this.dataGridView1.TabIndex = 3;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
-            this.dataGridView1.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentDoubleClick);
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyDown);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnSwitchNoRumah);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
             this.groupBox1.Controls.Add(this.Noreg);
             this.groupBox1.Controls.Add(this.label20);
@@ -176,20 +181,20 @@
             this.groupBox1.Controls.Add(this.cPendidikan);
             this.groupBox1.Controls.Add(this.label17);
             this.groupBox1.Controls.Add(this.cAgama);
-            this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.cNoReg);
+            this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.tRT);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.cRT);
             this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.cKK);
             this.groupBox1.Controls.Add(this.tNama);
             this.groupBox1.Controls.Add(this.tStatusKawin);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.tAlamat);
             this.groupBox1.Controls.Add(this.cJK);
             this.groupBox1.Controls.Add(this.tTempat);
-            this.groupBox1.Controls.Add(this.cKK);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.tKK);
             this.groupBox1.Controls.Add(this.label10);
@@ -202,24 +207,34 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Location = new System.Drawing.Point(7, 121);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Size = new System.Drawing.Size(412, 522);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Form Pengisian";
+            // 
+            // btnSwitchNoRumah
+            // 
+            this.btnSwitchNoRumah.Image = ((System.Drawing.Image)(resources.GetObject("btnSwitchNoRumah.Image")));
+            this.btnSwitchNoRumah.Location = new System.Drawing.Point(384, 188);
+            this.btnSwitchNoRumah.Name = "btnSwitchNoRumah";
+            this.btnSwitchNoRumah.Size = new System.Drawing.Size(23, 20);
+            this.btnSwitchNoRumah.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnSwitchNoRumah.TabIndex = 53;
+            this.btnSwitchNoRumah.TabStop = false;
+            this.btnSwitchNoRumah.Click += new System.EventHandler(this.btnSwitchNoRumah_Click);
             // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePicker1.Location = new System.Drawing.Point(194, 238);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(184, 20);
             this.dateTimePicker1.TabIndex = 52;
-            this.dateTimePicker1.EnabledChanged += new System.EventHandler(this.dateTimePicker1_EnabledChanged);
             // 
             // Noreg
             // 
@@ -234,7 +249,7 @@
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(17, 32);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(81, 15);
+            this.label20.Size = new System.Drawing.Size(70, 13);
             this.label20.TabIndex = 50;
             this.label20.Text = "No Registrasi";
             // 
@@ -256,7 +271,7 @@
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(17, 492);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(74, 15);
+            this.label18.Size = new System.Drawing.Size(66, 13);
             this.label18.TabIndex = 48;
             this.label18.Text = "Status BPJS";
             // 
@@ -264,6 +279,7 @@
             // 
             this.tPLain.Enabled = false;
             this.tPLain.Location = new System.Drawing.Point(194, 441);
+            this.tPLain.MaxLength = 50;
             this.tPLain.Name = "tPLain";
             this.tPLain.Size = new System.Drawing.Size(184, 20);
             this.tPLain.TabIndex = 47;
@@ -305,14 +321,13 @@
             this.cPendidikan.Name = "cPendidikan";
             this.cPendidikan.Size = new System.Drawing.Size(184, 21);
             this.cPendidikan.TabIndex = 45;
-            this.cPendidikan.TextChanged += new System.EventHandler(this.cPendidikan_TextChanged);
             // 
             // label17
             // 
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(17, 389);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(69, 15);
+            this.label17.Size = new System.Drawing.Size(60, 13);
             this.label17.TabIndex = 44;
             this.label17.Text = "Pendidikan";
             // 
@@ -333,35 +348,34 @@
             this.cAgama.Name = "cAgama";
             this.cAgama.Size = new System.Drawing.Size(184, 21);
             this.cAgama.TabIndex = 43;
-            this.cAgama.TextChanged += new System.EventHandler(this.cAgama_TextChanged);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(17, 291);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(46, 15);
-            this.label16.TabIndex = 42;
-            this.label16.Text = "Agama";
             // 
             // cNoReg
             // 
             this.cNoReg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cNoReg.Enabled = false;
             this.cNoReg.FormattingEnabled = true;
-            this.cNoReg.Location = new System.Drawing.Point(194, 186);
+            this.cNoReg.Location = new System.Drawing.Point(195, 188);
             this.cNoReg.Name = "cNoReg";
             this.cNoReg.Size = new System.Drawing.Size(184, 21);
             this.cNoReg.TabIndex = 41;
             this.cNoReg.Visible = false;
-            this.cNoReg.TextChanged += new System.EventHandler(this.cNoReg_TextChanged);
+            this.cNoReg.SelectedIndexChanged += new System.EventHandler(this.cNoReg_SelectedIndexChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(17, 291);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(40, 13);
+            this.label16.TabIndex = 42;
+            this.label16.Text = "Agama";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(17, 162);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(150, 15);
+            this.label14.Size = new System.Drawing.Size(130, 13);
             this.label14.TabIndex = 40;
             this.label14.Text = "Jabatan diRumah Tangga";
             // 
@@ -372,14 +386,13 @@
             this.tRT.Name = "tRT";
             this.tRT.Size = new System.Drawing.Size(184, 20);
             this.tRT.TabIndex = 39;
-            this.tRT.TextChanged += new System.EventHandler(this.tRT_TextChanged);
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(17, 188);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(67, 15);
+            this.label15.Size = new System.Drawing.Size(58, 13);
             this.label15.TabIndex = 38;
             this.label15.Text = "No Rumah";
             // 
@@ -395,21 +408,35 @@
             this.cRT.Name = "cRT";
             this.cRT.Size = new System.Drawing.Size(184, 21);
             this.cRT.TabIndex = 37;
-            this.cRT.TextChanged += new System.EventHandler(this.cRT_TextChanged);
+            this.cRT.SelectedIndexChanged += new System.EventHandler(this.cRT_SelectedIndexChanged);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(17, 243);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(83, 15);
+            this.label13.Size = new System.Drawing.Size(72, 13);
             this.label13.TabIndex = 35;
             this.label13.Text = "Tanggal Lahir";
+            // 
+            // cKK
+            // 
+            this.cKK.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cKK.Enabled = false;
+            this.cKK.FormattingEnabled = true;
+            this.cKK.Location = new System.Drawing.Point(194, 136);
+            this.cKK.Name = "cKK";
+            this.cKK.Size = new System.Drawing.Size(184, 21);
+            this.cKK.TabIndex = 25;
+            this.cKK.Visible = false;
+            this.cKK.SelectedIndexChanged += new System.EventHandler(this.cKK_SelectedIndexChanged);
+            this.cKK.Validating += new System.ComponentModel.CancelEventHandler(this.cKK_Validating);
             // 
             // tNama
             // 
             this.tNama.Enabled = false;
             this.tNama.Location = new System.Drawing.Point(194, 84);
+            this.tNama.MaxLength = 40;
             this.tNama.Name = "tNama";
             this.tNama.Size = new System.Drawing.Size(184, 20);
             this.tNama.TabIndex = 34;
@@ -429,14 +456,13 @@
             this.tStatusKawin.Name = "tStatusKawin";
             this.tStatusKawin.Size = new System.Drawing.Size(184, 21);
             this.tStatusKawin.TabIndex = 31;
-            this.tStatusKawin.TextChanged += new System.EventHandler(this.tStatusKawin_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(17, 466);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(109, 15);
+            this.label3.Size = new System.Drawing.Size(96, 13);
             this.label3.TabIndex = 30;
             this.label3.Text = "Status Perkawinan";
             // 
@@ -448,7 +474,7 @@
             this.tAlamat.Name = "tAlamat";
             this.tAlamat.Size = new System.Drawing.Size(184, 67);
             this.tAlamat.TabIndex = 28;
-            this.tAlamat.TextChanged += new System.EventHandler(this.tAlamat_TextChanged);
+            this.tAlamat.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tAlamat_KeyPress);
             // 
             // cJK
             // 
@@ -462,37 +488,23 @@
             this.cJK.Name = "cJK";
             this.cJK.Size = new System.Drawing.Size(184, 21);
             this.cJK.TabIndex = 27;
-            this.cJK.TextChanged += new System.EventHandler(this.cJK_TextChanged);
             // 
             // tTempat
             // 
             this.tTempat.Enabled = false;
             this.tTempat.Location = new System.Drawing.Point(194, 215);
+            this.tTempat.MaxLength = 30;
             this.tTempat.Name = "tTempat";
             this.tTempat.Size = new System.Drawing.Size(184, 20);
             this.tTempat.TabIndex = 26;
-            this.tTempat.TextChanged += new System.EventHandler(this.tTempat_TextChanged);
             this.tTempat.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tTempat_KeyPress);
-            // 
-            // cKK
-            // 
-            this.cKK.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cKK.Enabled = false;
-            this.cKK.FormattingEnabled = true;
-            this.cKK.Location = new System.Drawing.Point(194, 135);
-            this.cKK.Name = "cKK";
-            this.cKK.Size = new System.Drawing.Size(184, 21);
-            this.cKK.TabIndex = 25;
-            this.cKK.Visible = false;
-            this.cKK.SelectedIndexChanged += new System.EventHandler(this.cKK_SelectedIndexChanged);
-            this.cKK.TextChanged += new System.EventHandler(this.cKK_TextChanged);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(17, 110);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(114, 15);
+            this.label11.Size = new System.Drawing.Size(98, 13);
             this.label11.TabIndex = 24;
             this.label11.Text = "Jabatan diKeluarga";
             // 
@@ -500,18 +512,20 @@
             // 
             this.tKK.Enabled = false;
             this.tKK.Location = new System.Drawing.Point(194, 135);
+            this.tKK.MaxLength = 16;
             this.tKK.Name = "tKK";
             this.tKK.Size = new System.Drawing.Size(184, 20);
             this.tKK.TabIndex = 23;
             this.tKK.TextChanged += new System.EventHandler(this.tKK_TextChanged);
             this.tKK.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tKK_KeyPress);
+            this.tKK.Validating += new System.ComponentModel.CancelEventHandler(this.tKK_Validating);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(17, 136);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(42, 15);
+            this.label10.Size = new System.Drawing.Size(38, 13);
             this.label10.TabIndex = 22;
             this.label10.Text = "No KK";
             // 
@@ -520,7 +534,7 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(17, 317);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(45, 15);
+            this.label7.Size = new System.Drawing.Size(39, 13);
             this.label7.TabIndex = 21;
             this.label7.Text = "Alamat";
             // 
@@ -529,7 +543,7 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(17, 415);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(63, 15);
+            this.label8.Size = new System.Drawing.Size(55, 13);
             this.label8.TabIndex = 20;
             this.label8.Text = "Pekerjaan";
             // 
@@ -538,7 +552,7 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(17, 265);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(85, 15);
+            this.label9.Size = new System.Drawing.Size(71, 13);
             this.label9.TabIndex = 19;
             this.label9.Text = "Jenis Kelamin";
             // 
@@ -556,24 +570,25 @@
             this.cJabatan.Name = "cJabatan";
             this.cJabatan.Size = new System.Drawing.Size(184, 21);
             this.cJabatan.TabIndex = 17;
-            this.cJabatan.TextChanged += new System.EventHandler(this.cJabatan_TextChanged);
+            this.cJabatan.SelectedIndexChanged += new System.EventHandler(this.cJabatan_SelectedIndexChanged);
             // 
             // tNIK
             // 
             this.tNIK.Enabled = false;
             this.tNIK.Location = new System.Drawing.Point(194, 59);
+            this.tNIK.MaxLength = 16;
             this.tNIK.Name = "tNIK";
             this.tNIK.Size = new System.Drawing.Size(184, 20);
             this.tNIK.TabIndex = 15;
-            this.tNIK.TextChanged += new System.EventHandler(this.label6_TextChanged);
             this.tNIK.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tNIK_KeyPress);
+            this.tNIK.Validating += new System.ComponentModel.CancelEventHandler(this.tNIK_Validating);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(17, 84);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(80, 15);
+            this.label5.Size = new System.Drawing.Size(70, 13);
             this.label5.TabIndex = 14;
             this.label5.Text = "Nama Warga";
             // 
@@ -582,7 +597,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(17, 215);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 15);
+            this.label4.Size = new System.Drawing.Size(69, 13);
             this.label4.TabIndex = 13;
             this.label4.Text = "Tempat Lahir";
             // 
@@ -591,10 +606,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(17, 59);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(27, 15);
+            this.label6.Size = new System.Drawing.Size(25, 13);
             this.label6.TabIndex = 11;
             this.label6.Text = "NIK";
-            this.label6.TextChanged += new System.EventHandler(this.label6_TextChanged);
             // 
             // label1
             // 
@@ -603,7 +617,7 @@
             this.label1.Location = new System.Drawing.Point(186, 7);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(495, 72);
+            this.label1.Size = new System.Drawing.Size(395, 58);
             this.label1.TabIndex = 5;
             this.label1.Text = "DATA WARGA";
             // 
@@ -614,7 +628,7 @@
             this.label2.Location = new System.Drawing.Point(188, 77);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 17);
+            this.label2.Size = new System.Drawing.Size(73, 15);
             this.label2.TabIndex = 6;
             this.label2.Text = "Cari Data";
             // 
@@ -623,13 +637,13 @@
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
             this.btnAdd.Location = new System.Drawing.Point(129, 644);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(41, 37);
             this.btnAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btnAdd.TabIndex = 7;
             this.btnAdd.TabStop = false;
-            this.btnAdd.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnEdit
             // 
@@ -637,13 +651,13 @@
             this.btnEdit.Enabled = false;
             this.btnEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnEdit.Image")));
             this.btnEdit.Location = new System.Drawing.Point(186, 644);
-            this.btnEdit.Margin = new System.Windows.Forms.Padding(2);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(41, 37);
             this.btnEdit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btnEdit.TabIndex = 8;
             this.btnEdit.TabStop = false;
-            this.btnEdit.Click += new System.EventHandler(this.pictureBox3_Click);
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnRefresh
             // 
@@ -651,7 +665,7 @@
             this.btnRefresh.Enabled = false;
             this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
             this.btnRefresh.Location = new System.Drawing.Point(297, 644);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(41, 37);
             this.btnRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -666,7 +680,7 @@
             this.label19.Location = new System.Drawing.Point(614, 98);
             this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(130, 17);
+            this.label19.Size = new System.Drawing.Size(102, 15);
             this.label19.TabIndex = 10;
             this.label19.Text = "Jumlah Warga";
             // 
@@ -677,7 +691,7 @@
             this.jmlWarga.Location = new System.Drawing.Point(766, 98);
             this.jmlWarga.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.jmlWarga.Name = "jmlWarga";
-            this.jmlWarga.Size = new System.Drawing.Size(18, 17);
+            this.jmlWarga.Size = new System.Drawing.Size(15, 15);
             this.jmlWarga.TabIndex = 11;
             this.jmlWarga.Text = "0";
             // 
@@ -688,7 +702,7 @@
             this.label21.Location = new System.Drawing.Point(748, 97);
             this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(16, 17);
+            this.label21.Size = new System.Drawing.Size(14, 15);
             this.label21.TabIndex = 12;
             this.label21.Text = "=";
             // 
@@ -698,7 +712,7 @@
             this.btnSimpan.Enabled = false;
             this.btnSimpan.Image = ((System.Drawing.Image)(resources.GetObject("btnSimpan.Image")));
             this.btnSimpan.Location = new System.Drawing.Point(129, 644);
-            this.btnSimpan.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSimpan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSimpan.Name = "btnSimpan";
             this.btnSimpan.Size = new System.Drawing.Size(41, 37);
             this.btnSimpan.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -713,7 +727,7 @@
             this.btnDelete.Enabled = false;
             this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
             this.btnDelete.Location = new System.Drawing.Point(242, 644);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(41, 37);
             this.btnDelete.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -729,7 +743,7 @@
             this.label12.Location = new System.Drawing.Point(260, 96);
             this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(82, 12);
+            this.label12.Size = new System.Drawing.Size(68, 10);
             this.label12.TabIndex = 15;
             this.label12.Text = "*Nama Warga";
             // 
@@ -756,7 +770,7 @@
             this.Controls.Add(this.tCari);
             this.Controls.Add(this.topBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MinimumSize = new System.Drawing.Size(82, 41);
             this.Name = "DataWarga";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -765,6 +779,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSwitchNoRumah)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnAdd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnRefresh)).EndInit();
@@ -828,5 +843,6 @@
         private System.Windows.Forms.PictureBox btnDelete;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.PictureBox btnSwitchNoRumah;
     }
 }
